@@ -1,0 +1,369 @@
+/* ──────────────────────────────────────────────────────────────────────────
+   LATAM AI Summit — design system
+   Warm paper, black ink, hairline rails, soft rounded surfaces and real
+   photography. Light display type (Host Grotesk) over Inter text.
+   ────────────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* Surfaces */
+  --ds-bg: #fdfcfc;
+  --ds-surface: #f5f3f1;
+  --ds-surface-2: #ebe8e4;
+  --ds-white: #fff;
+
+  /* Ink */
+  --ds-ink: #000;
+  --ds-ink-2: #2b2926;
+  --ds-muted: #777169;
+  --ds-subtle: #a8a29b;
+
+  /* Hairlines */
+  --ds-line: rgb(0 0 0 / 0.06);
+  --ds-line-2: rgb(0 0 0 / 0.1);
+  --ds-line-dash: rgb(0 0 0 / 0.14);
+
+  /* Signal (used only for "live") */
+  --ds-live: #ff4f2b;
+
+  /* Type */
+  --ds-font-display: var(--font-display), "Helvetica Neue", Arial, sans-serif;
+  --ds-font-text: var(--font-text), system-ui, sans-serif;
+  --ds-font-mono: var(--font-geist-mono), ui-monospace, monospace;
+
+  /* Radii */
+  --ds-r-sm: 10px;
+  --ds-r-md: 14px;
+  --ds-r-lg: 20px;
+  --ds-r-xl: 24px;
+  --ds-r-pill: 9999px;
+
+  /* Elevation */
+  --ds-ring: 0 0 0 0.5px rgb(0 0 0 / 0.08), 0 1.5px 3px rgb(0 0 0 / 0.04);
+  --ds-raise: 0 0 1px rgb(0 0 0 / 0.4), 0 1px 1px rgb(0 0 0 / 0.04),
+    0 2px 4px rgb(0 0 0 / 0.04);
+  --ds-float: 0 0 1px rgb(0 0 0 / 0.25), 0 16px 32px -12px rgb(16 18 40 / 0.28),
+    0 40px 80px -32px rgb(16 18 40 / 0.4);
+
+  /* Motion */
+  --ds-ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --ds-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ds-fast: 160ms;
+  --ds-base: 280ms;
+
+  /* Layout */
+  --ds-container: 1200px;
+  --ds-inset: 48px;
+  --ds-section: 120px;
+  --ds-nav: 64px;
+}
+
+@media (max-width: 900px) {
+  :root {
+    --ds-inset: 28px;
+    --ds-section: 96px;
+  }
+}
+@media (max-width: 640px) {
+  :root {
+    --ds-inset: 20px;
+    --ds-section: 72px;
+    --ds-nav: 58px;
+  }
+}
+
+/* ── Typography ─────────────────────────────────────────────────────────── */
+
+.ds-display-xl,
+.ds-display-l,
+.ds-display-m,
+.ds-display-s {
+  font-family: var(--ds-font-display);
+  font-weight: 300;
+  color: var(--ds-ink);
+  text-wrap: balance;
+}
+.ds-display-xl {
+  font-size: clamp(3rem, 1.6rem + 5.6vw, 6rem);
+  line-height: 1;
+  letter-spacing: -0.035em;
+}
+.ds-display-l {
+  font-size: clamp(2.25rem, 1.5rem + 2.8vw, 3.5rem);
+  line-height: 1.06;
+  letter-spacing: -0.03em;
+}
+.ds-display-m {
+  font-size: clamp(2rem, 1.55rem + 1.6vw, 2.75rem);
+  line-height: 1.12;
+  letter-spacing: -0.025em;
+}
+.ds-display-s {
+  font-size: clamp(1.375rem, 1.15rem + 0.7vw, 1.75rem);
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+.ds-eyebrow {
+  font: 500 0.9375rem/1.4 var(--ds-font-text);
+  letter-spacing: 0.01em;
+  color: var(--ds-muted);
+  margin-bottom: 16px;
+}
+.ds-mono {
+  font-family: var(--ds-font-mono);
+  font-feature-settings: "tnum";
+}
+
+/* ── Frame: hairline rails and section bands ─────────────────────────────── */
+
+.ds-frame {
+  position: relative;
+  width: min(var(--ds-container), 100% - 48px);
+  margin-inline: auto;
+  border-inline: 1px solid var(--ds-line);
+}
+.ds-band {
+  position: relative;
+  border-top: 1px solid var(--ds-line);
+}
+.ds-band > .ds-frame::before,
+.ds-band > .ds-frame::after {
+  content: "";
+  position: absolute;
+  top: -5px;
+  width: 9px;
+  height: 9px;
+  background:
+    linear-gradient(var(--ds-line-dash), var(--ds-line-dash)) center / 1px 100%
+      no-repeat,
+    linear-gradient(var(--ds-line-dash), var(--ds-line-dash)) center / 100% 1px
+      no-repeat;
+  pointer-events: none;
+  z-index: 2;
+}
+.ds-band > .ds-frame::before {
+  left: -5px;
+}
+.ds-band > .ds-frame::after {
+  right: -5px;
+}
+.ds-section {
+  padding: var(--ds-section) var(--ds-inset);
+}
+@media (max-width: 640px) {
+  .ds-frame {
+    width: 100%;
+    border-inline: 0;
+  }
+  .ds-band > .ds-frame::before,
+  .ds-band > .ds-frame::after {
+    display: none;
+  }
+}
+
+/* ── Section heading ────────────────────────────────────────────────────── */
+
+.ds-heading {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: end;
+  gap: 28px 64px;
+  margin-bottom: 56px;
+}
+.ds-heading-aside {
+  display: grid;
+  gap: 24px;
+  justify-items: start;
+}
+.ds-heading-aside p {
+  max-width: 460px;
+  font-size: 1rem;
+  line-height: 1.6;
+  letter-spacing: 0.01em;
+  color: var(--ds-ink-2);
+}
+@media (max-width: 900px) {
+  .ds-heading {
+    grid-template-columns: 1fr;
+    margin-bottom: 40px;
+  }
+}
+
+/* ── Buttons ─────────────────────────────────────────────────────────────── */
+
+.ds-button {
+  --button-h: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: var(--button-h);
+  padding: 0 16px 0 18px;
+  border-radius: var(--ds-r-pill);
+  font: 500 0.875rem/1 var(--ds-font-text);
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    background-color var(--ds-fast) var(--ds-ease),
+    box-shadow var(--ds-fast) var(--ds-ease),
+    color var(--ds-fast) var(--ds-ease),
+    transform var(--ds-fast) var(--ds-ease);
+}
+.ds-button[data-size="lg"] {
+  --button-h: 46px;
+  padding: 0 18px 0 22px;
+  font-size: 0.9375rem;
+}
+.ds-button svg {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  transition: transform var(--ds-base) var(--ds-ease-out);
+}
+.ds-button:hover svg {
+  transform: translate(2px, -1px);
+}
+.ds-button:active {
+  transform: scale(0.98);
+}
+.ds-button[data-variant="primary"] {
+  background: var(--ds-ink);
+  color: var(--ds-white);
+}
+.ds-button[data-variant="primary"]:hover {
+  background: #2e2b28;
+}
+.ds-button[data-variant="secondary"] {
+  background: var(--ds-white);
+  color: var(--ds-ink);
+  box-shadow: var(--ds-raise);
+}
+.ds-button[data-variant="secondary"]:hover {
+  background: var(--ds-surface);
+}
+
+/* ── Pills ───────────────────────────────────────────────────────────────── */
+
+.ds-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 28px;
+  padding: 0 12px;
+  border-radius: var(--ds-r-pill);
+  font: 500 0.8125rem/1 var(--ds-font-text);
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+}
+.ds-pill img {
+  border-radius: 2px;
+}
+.ds-pill[data-tone="neutral"] {
+  background: var(--ds-surface-2);
+  color: var(--ds-ink-2);
+}
+.ds-pill[data-tone="white"] {
+  background: var(--ds-white);
+  color: var(--ds-ink);
+  box-shadow: var(--ds-raise);
+}
+.ds-pill[data-tone="glass"] {
+  background: rgb(255 255 255 / 0.18);
+  color: var(--ds-white);
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.28);
+  backdrop-filter: blur(16px) saturate(1.4);
+  -webkit-backdrop-filter: blur(16px) saturate(1.4);
+}
+
+/* ── Cards, tiles, media ─────────────────────────────────────────────────── */
+
+.ds-card {
+  background: var(--ds-surface);
+  border-radius: var(--ds-r-lg);
+  padding: 24px;
+}
+.ds-icon-tile {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--ds-r-sm);
+  background: var(--ds-white);
+  box-shadow: var(--ds-raise);
+}
+.ds-icon-tile svg {
+  width: 18px;
+  height: 18px;
+  stroke-width: 1.6;
+}
+.ds-media {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  border-radius: var(--ds-r-xl);
+  background: #6f7aa6;
+}
+.ds-media > img {
+  object-fit: cover;
+}
+
+/* ── Logo mark ───────────────────────────────────────────────────────────── */
+
+.ds-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  color: var(--ds-ink);
+}
+.ds-logo svg {
+  width: 23px;
+  height: 18px;
+  fill: currentColor;
+  flex-shrink: 0;
+}
+.ds-logo-word {
+  font: 500 1.0625rem/1 var(--ds-font-display);
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+}
+
+/* ── Company logos ───────────────────────────────────────────────────────── */
+
+.ds-company {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45em;
+  font: 500 1em/1 var(--ds-font-display);
+  letter-spacing: -0.015em;
+  color: var(--ds-ink);
+}
+.ds-company img {
+  object-fit: contain;
+}
+
+/* ── Motion ──────────────────────────────────────────────────────────────── */
+
+@keyframes ds-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgb(255 79 43 / 0.5);
+  }
+  70%,
+  100% {
+    box-shadow: 0 0 0 8px rgb(255 79 43 / 0);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+:focus-visible {
+  outline: 2px solid var(--ds-ink);
+  outline-offset: 3px;
+  border-radius: 4px;
+}

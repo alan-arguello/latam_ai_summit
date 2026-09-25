@@ -1,16 +1,30 @@
 import type { Viewport } from "next";
-import { GeistSans } from "geist/font/sans";
+import { Host_Grotesk, Inter } from "next/font/google";
 import { GeistMono } from "geist/font/mono";
-import { GeistPixelSquare } from "geist/font/pixel";
 
 import "./globals.css";
+import "./design-system.css";
 import "./summit.css";
+
+// Display: Host Grotesk, the closest open match to ElevenLabs' Waldenburg.
+const display = Host_Grotesk({
+  subsets: ["latin", "latin-ext"],
+  variable: "--font-display",
+  display: "swap",
+});
+
+// Text: Inter, as on elevenlabs.io.
+const text = Inter({
+  subsets: ["latin", "latin-ext"],
+  variable: "--font-text",
+  display: "swap",
+});
 
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#090909",
-  colorScheme: "dark",
+  themeColor: "#fdfcfc",
+  colorScheme: "light",
 };
 
 export default function RootLayout({
@@ -18,13 +32,13 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  // Font variables live on <html> so :root tokens can resolve them.
   return (
-    <html lang="es">
-      <body
-        className={`${GeistSans.variable} ${GeistMono.variable} ${GeistPixelSquare.variable}`}
-      >
-        {children}
-      </body>
+    <html
+      lang="es"
+      className={`${display.variable} ${text.variable} ${GeistMono.variable}`}
+    >
+      <body>{children}</body>
     </html>
   );
 }

@@ -5,30 +5,39 @@
 }
 html {
   scroll-behavior: smooth;
-  color-scheme: dark;
+  color-scheme: light;
+  -webkit-text-size-adjust: 100%;
 }
 body {
   margin: 0;
-  background: #090909;
-  color: #ededed;
-  font-family: var(--font-geist-sans), Arial, sans-serif;
+  background: #fdfcfc;
+  color: #000;
+  font-family: var(--font-text), system-ui, sans-serif;
   font-size: 16px;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+h1,
+h2,
+h3,
+p,
+dl,
+dd,
+ol,
+ul,
+figure {
+  margin: 0;
+}
+ol,
+ul {
+  padding: 0;
+  list-style: none;
 }
 a {
   color: inherit;
-}
-button,
-input {
-  font: inherit;
-  color: inherit;
-}
-button {
-  cursor: pointer;
-}
-button:disabled {
-  cursor: wait;
+  text-decoration: none;
 }
 img,
 svg,
@@ -38,21 +47,16 @@ canvas {
 img {
   max-width: 100%;
 }
-fieldset {
-  margin: 0;
-  padding: 0;
-  border: 0;
-  min-width: 0;
+button {
+  font: inherit;
+  color: inherit;
 }
-ul {
-  margin: 0;
-  padding: 0;
-  list-style: none;
+em {
+  font-style: normal;
 }
-h1,
-h2,
-h3 {
-  font-weight: inherit;
+::selection {
+  background: #ffd8c8;
+  color: #000;
 }
 @media (prefers-reduced-motion: reduce) {
   html {

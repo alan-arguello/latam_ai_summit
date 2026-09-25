@@ -1,5 +1,5 @@
-// Generates public/images/opengraph.png (1200x630) and src/app/icon.png.
-// Run with `npm run og` after changing the hero photo, date or venue.
+// Generates public/images/opengraph.png (1200×630) and src/app/icon.png.
+// Run with `npm run og` after changing the photo, date or venue.
 import { readFile, writeFile } from "node:fs/promises";
 import { createElement as h } from "react";
 import { ImageResponse } from "next/og.js";
@@ -11,148 +11,121 @@ const dataUrl = (buffer, type = "image/png") =>
   `data:${type};base64,${buffer.toString("base64")}`;
 const width = 1200;
 const height = 630;
-const accent = "#ff5a1f";
 
-// ASCII background from the same (mirrored) Golden Gate photo as the hero.
-const columns = 150;
-const rows = 53;
-const glyphs = " .,:;+=xX#%@";
-const photo = await sharp(await readFile(asset("public/images/hero/golden-gate.webp")))
-  .resize(columns, rows, { fit: "cover", position: "centre" })
-  .removeAlpha()
-  .raw()
-  .toBuffer();
-const cells = [];
-for (let row = 0; row < rows; row++) {
-  for (let col = 0; col < columns; col++) {
-    const i = (row * columns + col) * 3;
-    const [red, green, blue] = [photo[i], photo[i + 1], photo[i + 2]];
-    const light = (red * 0.2126 + green * 0.7152 + blue * 0.0722) / 255;
-    const glyph =
-      glyphs[Math.min(glyphs.length - 1, Math.floor(Math.pow(light, 0.65) * glyphs.length))];
-    if (glyph === " ") continue;
-    const bridge = red > 95 && red > green * 1.45 && red > blue * 1.7;
-    const x = col / columns;
-    const y = row / rows;
-    const reveal = 0.08 + Math.pow(x, 2.2) * 1.9;
-    const sky = !bridge && y < 0.55 && light > 0.6 ? 0.1 : 1;
-    const alpha = Math.min(bridge ? 0.95 : 0.8, (0.2 + light * 0.85) * reveal * sky * (bridge ? 1.35 : 1));
-    const fill = bridge ? `rgba(255,90,31,${alpha.toFixed(3)})` : `rgba(214,214,214,${alpha.toFixed(3)})`;
-    cells.push(`<text x="${col * 8}" y="${row * 12 + 10}" fill="${fill}">${glyph}</text>`);
-  }
-}
-const background = await sharp(
-  Buffer.from(
-    `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}"><rect width="100%" height="100%" fill="#090909"/><g font-family="monospace" font-size="10">${cells.join("")}</g><rect y="${height * 0.62}" width="100%" height="${height * 0.38}" fill="url(#fade)"/><defs><linearGradient id="fade" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#090909" stop-opacity="0"/><stop offset="0.8" stop-color="#090909"/></linearGradient></defs></svg>`,
-  ),
+// Same photograph as the hero, cropped so the tower sits just right of centre.
+const photo = await sharp(
+  await readFile(asset("public/images/photos/golden-gate-fog.webp")),
 )
-  .png()
+  .resize(width, height, { fit: "cover", position: "left" })
+  .jpeg({ quality: 90 })
   .toBuffer();
 
-// 5x7 bitmap letters, drawn as squares to echo Geist Pixel on the site.
-const bitmap = {
-  L: ["X....", "X....", "X....", "X....", "X....", "X....", "XXXXX"],
-  A: [".XXX.", "X...X", "X...X", "XXXXX", "X...X", "X...X", "X...X"],
-  T: ["XXXXX", "..X..", "..X..", "..X..", "..X..", "..X..", "..X.."],
-  M: ["X...X", "XX.XX", "X.X.X", "X.X.X", "X...X", "X...X", "X...X"],
-};
-function pixelWord(word, size, fill) {
-  const rects = [];
-  [...word].forEach((letter, index) => {
-    bitmap[letter].forEach((line, y) =>
-      [...line].forEach((pixel, x) => {
-        if (pixel === "X")
-          rects.push(
-            `<rect x="${(index * 6 + x) * size}" y="${y * size}" width="${size}" height="${size}" fill="${fill}"/>`,
-          );
-      }),
-    );
-  });
-  const w = (word.length * 6 - 1) * size;
-  return {
-    svg: `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${7 * size}" viewBox="0 0 ${w} ${7 * size}">${rects.join("")}</svg>`,
-    width: w,
-    height: 7 * size,
-  };
-}
+// Same geometry as <LogoMark />.
+const mark = (color) =>
+  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 26 20" fill="${color}"><rect x="5" y="0" width="2.2" height="20"/><rect x="18.8" y="0" width="2.2" height="20"/><path d="M0 12 Q 6 11 6.1 1.2 Q 13 13.5 19.9 1.2 Q 20 11 26 12" fill="none" stroke="${color}" stroke-width="1.5"/><rect x="0" y="12.6" width="26" height="1.8"/></svg>`;
 
-// Same pixel "AI" tile as the site's LogoMark.
-const markPixels = [
-  [0, 1], [1, 0], [2, 1], [0, 2], [1, 2], [2, 2], [0, 3], [2, 3], [0, 4], [2, 4],
-  [4, 0], [4, 1], [4, 2], [4, 3], [4, 4],
-];
-const mark = (radius = 3) =>
-  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 28"><rect width="28" height="28" rx="${radius}" fill="${accent}"/>${markPixels
-    .map(([x, y]) => `<rect x="${4 + x * 4}" y="${4 + y * 4}" width="4" height="4" fill="#0b0b0b"/>`)
-    .join("")}</svg>`;
+const font = (name) => readFile(asset(`scripts/fonts/${name}.ttf`));
+const [displayLight, displayMedium, text, textMedium] = await Promise.all([
+  font("HostGrotesk-300"),
+  font("HostGrotesk-500"),
+  font("Inter-400"),
+  font("Inter-500"),
+]);
 
-const title = pixelWord("LATAM", 17, "#f2f2f2");
-const sans = await readFile(asset("node_modules/geist/dist/fonts/geist-sans/Geist-Regular.ttf"));
-const light = await readFile(asset("node_modules/geist/dist/fonts/geist-sans/Geist-Light.ttf"));
-const mono = await readFile(asset("node_modules/geist/dist/fonts/geist-mono/GeistMono-Regular.ttf"));
-const row = (style, ...children) => h("div", { style: { display: "flex", ...style } }, ...children);
+const row = (style, ...children) =>
+  h("div", { style: { display: "flex", ...style } }, ...children);
+const pill = (label, dark = false) =>
+  h(
+    "span",
+    {
+      style: {
+        display: "flex",
+        alignItems: "center",
+        height: 40,
+        padding: "0 18px",
+        borderRadius: 999,
+        fontFamily: "Inter",
+        fontWeight: 500,
+        fontSize: 18,
+        color: dark ? "#fff" : "#000",
+        background: dark ? "rgba(255,255,255,0.16)" : "#fff",
+        border: dark ? "1px solid rgba(255,255,255,0.32)" : "none",
+      },
+    },
+    label,
+  );
 
 const image = new ImageResponse(
   row(
-    { width, height, position: "relative", background: "#090909", color: "#f2f2f2", fontFamily: "Geist" },
-    h("img", { src: dataUrl(background), width, height, style: { position: "absolute", inset: 0 } }),
+    { width, height, position: "relative", fontFamily: "Host Grotesk", color: "#fff" },
+    h("img", {
+      src: dataUrl(photo, "image/jpeg"),
+      width,
+      height,
+      style: { position: "absolute", inset: 0 },
+    }),
+    h("div", {
+      style: {
+        position: "absolute",
+        top: 0,
+        left: 0,
+        width,
+        height,
+        background:
+          "linear-gradient(180deg, rgba(10,12,32,0.18) 0%, rgba(10,12,32,0) 30%, rgba(10,12,32,0.1) 55%, rgba(10,12,32,0.72) 100%)",
+      },
+    }),
     row(
       {
         position: "absolute",
-        inset: 0,
+        top: 0,
+        left: 0,
         width,
         height,
         flexDirection: "column",
         justifyContent: "space-between",
-        padding: "46px 60px 44px",
+        padding: "44px 56px 50px",
       },
       row(
         { justifyContent: "space-between", alignItems: "center" },
         row(
-          { alignItems: "center", gap: 14 },
-          h("img", { src: dataUrl(Buffer.from(mark()), "image/svg+xml"), width: 40, height: 40 }),
+          { alignItems: "center", gap: 12 },
+          h("img", {
+            src: dataUrl(Buffer.from(mark("#000")), "image/svg+xml"),
+            width: 30,
+            height: 23,
+          }),
           row(
-            { flexDirection: "column", gap: 2 },
-            h("span", { style: { fontSize: 20 } }, "LATAM AI Summit"),
-            h("span", { style: { fontSize: 15, color: "#9a9a9a", fontFamily: "Geist Mono" } }, "#SFTechWeek · Evento en español"),
+            { gap: 7, fontWeight: 500, fontSize: 26, letterSpacing: -0.5, color: "#000" },
+            ...["LATAM", "AI", "Summit"].map((word) => h("span", null, word)),
           ),
         ),
-        h("span", { style: { fontSize: 18, color: "#bbb", fontFamily: "Geist Mono" } }, "San Francisco, CA"),
+        pill("#SFTechWeek"),
       ),
       row(
         { flexDirection: "column" },
-        h("img", { src: dataUrl(Buffer.from(title.svg), "image/svg+xml"), width: title.width, height: title.height }),
+        // Words set apart explicitly: Satori does not tighten spaces with tracking.
         row(
-          { alignItems: "baseline", marginTop: 18 },
-          h("span", { style: { fontSize: 64, fontWeight: 300, color: "#dedede" } }, "AI Summit"),
-          h("span", { style: { fontSize: 64, fontWeight: 300, color: accent, marginLeft: 6 } }, "_"),
-        ),
-        h(
-          "span",
-          { style: { fontSize: 24, color: "#b5b5b5", marginTop: 14 } },
-          "Un día. Una comunidad. Un idioma.",
-        ),
-      ),
-      row(
-        { justifyContent: "space-between", alignItems: "center", borderTop: "1px solid #3a3a3a", paddingTop: 24 },
-        row(
-          { flexDirection: "column", gap: 4 },
-          h("span", { style: { fontSize: 24 } }, "Miércoles 7 de octubre, 2026"),
-          h("span", { style: { fontSize: 17, color: "#9a9a9a" } }, "10:00 a.m. PT · Consulado de Colombia en San Francisco"),
+          { gap: 24, fontWeight: 300, fontSize: 116, lineHeight: 1, letterSpacing: -4 },
+          ...["LATAM", "AI", "Summit"].map((word) => h("span", null, word)),
         ),
         h(
           "span",
           {
             style: {
-              display: "flex",
-              background: accent,
-              color: "#150700",
-              fontSize: 20,
-              padding: "14px 26px",
-              borderRadius: 999,
+              fontFamily: "Inter",
+              fontSize: 26,
+              marginTop: 18,
+              color: "rgba(255,255,255,0.88)",
             },
           },
-          "Regístrate gratis",
+          "Miércoles 7 de octubre, 2026 · San Francisco",
+        ),
+        row(
+          { gap: 10, marginTop: 30 },
+          pill("Consulado General de Colombia"),
+          pill("Evento en español", true),
+          pill("Entrada gratuita", true),
         ),
       ),
     ),
@@ -161,9 +134,10 @@ const image = new ImageResponse(
     width,
     height,
     fonts: [
-      { name: "Geist", data: sans, weight: 400, style: "normal" },
-      { name: "Geist", data: light, weight: 300, style: "normal" },
-      { name: "Geist Mono", data: mono, weight: 400, style: "normal" },
+      { name: "Host Grotesk", data: displayLight, weight: 300, style: "normal" },
+      { name: "Host Grotesk", data: displayMedium, weight: 500, style: "normal" },
+      { name: "Inter", data: text, weight: 400, style: "normal" },
+      { name: "Inter", data: textMedium, weight: 500, style: "normal" },
     ],
   },
 );
@@ -171,6 +145,15 @@ const og = asset("public/images/opengraph.png");
 await writeFile(og, Buffer.from(await image.arrayBuffer()));
 console.log(`Generated ${og.pathname}`);
 
+// Favicon: the bridge mark in white on a black rounded tile.
 const icon = asset("src/app/icon.png");
-await sharp(Buffer.from(mark(4)), { density: 900 }).resize(256, 256).png().toFile(icon.pathname);
+await sharp(
+  Buffer.from(
+    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="#000"/><g fill="#fff" transform="translate(12 16.6) scale(1.54)">${mark("#fff").replace(/^<svg[^>]*>|<\/svg>$/g, "")}</g></svg>`,
+  ),
+  { density: 600 },
+)
+  .resize(256, 256)
+  .png()
+  .toFile(icon.pathname);
 console.log(`Generated ${icon.pathname}`);

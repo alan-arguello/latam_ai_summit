@@ -47,7 +47,7 @@ export function Countdown() {
     }
   }
   return (
-    <span className="la-countdown" data-live={live}>
+    <span className="lp-countdown" data-live={live}>
       {label}
     </span>
   );
@@ -60,10 +60,10 @@ export function SlotStatus({ start, end }: { start: string; end: string }) {
     return null;
   const from = Date.parse(`${summit.date}T${start}:00-07:00`);
   const to = Date.parse(`${summit.date}T${end}:00-07:00`);
-  if (now >= to) return <span className="la-slot-status" data-state="past" />;
+  if (now >= to) return <span className="lp-slot-status" data-state="past" />;
   if (now < from) return null;
   return (
-    <span className="la-slot-status" data-state="live">
+    <span className="lp-slot-status" data-state="live">
       Ahora
     </span>
   );

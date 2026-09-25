@@ -1,6 +1,16 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import { ArrowRight, ArrowUpRight, CalendarPlus, MapPin } from "lucide-react";
+import {
+  ArrowRight,
+  ArrowUpRight,
+  CalendarPlus,
+  Globe,
+  Handshake,
+  Landmark,
+  MapPin,
+  Sparkles,
+  UserRound,
+} from "lucide-react";
 import {
   agenda,
   confirmedCompanies,
@@ -17,14 +27,20 @@ import {
   type Speaker,
 } from "@/lib/summit";
 import { isPublicSite, siteUrl } from "@/lib/site-url";
-import { GoldenGateAscii } from "./golden-gate-ascii";
-import { SpeakerPortrait } from "./speaker-portrait";
-import { EventCarousel } from "./event-carousel";
+import {
+  Button,
+  CompanyLogo,
+  LogoMark,
+  Pill,
+  SectionHeading,
+} from "@/components/ui";
 import { Countdown, SlotStatus } from "./event-clock";
-import { CompanyLogo, LogoMark, PlaceholderPortrait } from "./marks";
+
+const HERO_PHOTO = "/images/photos/golden-gate-fog.webp";
+const VENUE_PHOTO = "/images/photos/golden-gate-sunset.webp";
 
 const description =
-  "Un encuentro en español durante SF Tech Week que conecta a la comunidad tech de Latinoamérica con Silicon Valley. 7 de octubre de 2026 en el Consulado de Colombia en San Francisco.";
+  "Un encuentro en español durante SF Tech Week que conecta a la comunidad tech de Latinoamérica con Silicon Valley. 7 de octubre de 2026 en el Consulado General de Colombia en San Francisco.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -39,7 +55,7 @@ export const metadata: Metadata = {
     siteName: summit.name,
     title: "LATAM AI Summit · San Francisco, 7 de octubre",
     description:
-      "Un día. Una comunidad. Un idioma. La comunidad tech de Latinoamérica se reúne en San Francisco durante SF Tech Week.",
+      "Un día. Una comunidad. Un idioma. Siete consulados latinoamericanos reúnen a la comunidad tech de la región en San Francisco durante SF Tech Week.",
     images: [
       {
         url: "/images/opengraph.png",
@@ -55,110 +71,93 @@ export const metadata: Metadata = {
   },
 };
 
+const REGISTER_LABEL = "Regístrate al LATAM AI Summit en Partiful (nueva pestaña)";
 const external = { target: "_blank", rel: "noopener noreferrer" } as const;
 
-function RegisterButton({
-  children = "Regístrate en Partiful",
-  className = "la-button la-button-accent",
-}: {
-  children?: React.ReactNode;
-  className?: string;
-}) {
-  return (
-    <a
-      href={summit.registrationUrl}
-      className={className}
-      {...external}
-      aria-label="Regístrate al LATAM AI Summit en Partiful (nueva pestaña)"
-    >
-      {children} <ArrowUpRight aria-hidden="true" />
-    </a>
-  );
-}
+const themeIcons = {
+  spark: Sparkles,
+  globe: Globe,
+  capital: Landmark,
+  people: Handshake,
+} as const;
 
-function Flags({ compact = false }: { compact?: boolean }) {
+// Where to sample the fog photo for each placeholder portrait.
+const placeholderCrops: Record<string, string> = {
+  paolo: "18% 20%",
+  openai: "62% 58%",
+};
+
+function Flags() {
   return (
-    <ul
-      className="la-flags"
-      data-compact={compact}
-      aria-label="Consulados participantes"
-    >
+    <ul className="lp-flags" aria-label="Consulados participantes">
       {consulates.map((consulate) => (
         <li key={consulate.country}>
-          <Image
-            src={consulate.flag}
-            alt=""
-            width={24}
-            height={16}
-            className="la-flag"
-          />
-          <span>{consulate.country}</span>
-          {consulate.leads && !compact && <small>Lidera</small>}
+          <Image src={consulate.flag} alt="" width={18} height={12} />
+          {consulate.country}
         </li>
       ))}
     </ul>
   );
 }
 
-function SpeakerChip({ speaker }: { speaker: Speaker }) {
+function Person({ speaker }: { speaker: Speaker }) {
+  const detail =
+    speaker.status === "tbc"
+      ? "Por confirmar"
+      : speaker.status === "tba"
+        ? "Por anunciar"
+        : speaker.org;
   return (
     <li>
-      <a href={`#speaker-${speaker.id}`} className="la-chip">
+      <a href={`#speaker-${speaker.id}`} className="lp-person">
         {speaker.image ? (
-          <Image src={speaker.image} alt="" width={28} height={28} />
+          <Image src={speaker.image} alt="" width={36} height={36} />
         ) : (
-          <span className="la-chip-empty" aria-hidden="true">
-            ?
+          <span className="lp-person-empty" aria-hidden="true">
+            <UserRound />
           </span>
         )}
         <span>
           <strong>{speaker.name}</strong>
-          <small>
-            {speaker.status === "tbc"
-              ? "Por confirmar"
-              : speaker.status === "tba"
-                ? "Por anunciar"
-                : speaker.org}
-          </small>
+          <small>{detail}</small>
         </span>
       </a>
     </li>
   );
 }
 
-function AgendaSlot({ item }: { item: AgendaItem }) {
+function AgendaRow({ item }: { item: AgendaItem }) {
+  const major = item.highlight ?? false;
   return (
-    <li
-      className="la-slot"
-      id={`slot-${item.id}`}
-      data-highlight={item.highlight ?? false}
-    >
-      <div className="la-slot-time">
+    <li className="lp-slot" id={`slot-${item.id}`} data-major={major}>
+      <div className="lp-slot-time">
         <time dateTime={`${summit.date}T${item.start}`}>
           {formatTimeRange(item.start, item.end)}
         </time>
         <SlotStatus start={item.start} end={item.end ?? item.start} />
       </div>
-      <div className="la-slot-body">
-        <div className="la-slot-meta">
-          <span className="la-slot-kind">{item.kind}</span>
-          {item.host && (
-            <span className="la-slot-host">
-              con <CompanyLogo company={item.host} height={14} />
-            </span>
-          )}
-        </div>
+      <div className="lp-slot-main">
+        {major && (
+          <div className="lp-slot-meta">
+            <Pill tone="neutral">{item.kind}</Pill>
+            {item.host && (
+              <span className="lp-slot-host">
+                con <CompanyLogo company={item.host} height={14} />
+              </span>
+            )}
+          </div>
+        )}
         <h3>{item.title}</h3>
         {item.description && <p>{item.description}</p>}
         {item.speakers && (
-          <ul className="la-chips" aria-label="Speakers">
+          <ul className="lp-people" aria-label="Speakers">
             {item.speakers.map((id) => (
-              <SpeakerChip key={id} speaker={speakerById(id)} />
+              <Person key={id} speaker={speakerById(id)} />
             ))}
           </ul>
         )}
         {item.invited && (
-          <div className="la-slot-invited">
+          <div className="lp-invited">
             <span>Invitados por confirmar</span>
             <ul>
               {item.invited.map((company) => (
@@ -169,7 +168,7 @@ function AgendaSlot({ item }: { item: AgendaItem }) {
             </ul>
           </div>
         )}
-        {item.showFlags && <Flags compact />}
+        {item.showFlags && <Flags />}
       </div>
     </li>
   );
@@ -177,106 +176,130 @@ function AgendaSlot({ item }: { item: AgendaItem }) {
 
 function SpeakerCard({ speaker }: { speaker: Speaker }) {
   const session = agenda.find((item) => item.id === speaker.session);
-  const portrait = speaker.image ? (
-    <SpeakerPortrait src={speaker.image} name={speaker.name} />
-  ) : (
-    <PlaceholderPortrait seed={speaker.id} company={speaker.company} />
-  );
-  const caption = (
-    <>
-      <div className="la-speaker-photo">
-        {portrait}
-        {speaker.status && (
-          <span className="la-badge">
-            {speaker.status === "tbc" ? "Por confirmar" : "Por anunciar"}
+  const media = (
+    <div className="lp-speaker-media" data-placeholder={!speaker.image}>
+      {speaker.image ? (
+        <Image
+          src={speaker.image}
+          alt={speaker.name}
+          fill
+          sizes="(max-width: 640px) 45vw, (max-width: 1100px) 30vw, 220px"
+          quality={90}
+        />
+      ) : (
+        <>
+          <Image
+            src={HERO_PHOTO}
+            alt=""
+            fill
+            sizes="220px"
+            className="lp-speaker-haze"
+            style={{ objectPosition: placeholderCrops[speaker.id] ?? "50% 50%" }}
+          />
+          <span className="lp-speaker-placeholder">
+            {speaker.company && (
+              <Image
+                src={speaker.company.logo}
+                alt=""
+                width={Math.round(26 * speaker.company.ratio)}
+                height={26}
+              />
+            )}
+            Por anunciar
           </span>
-        )}
-      </div>
-      <div className="la-speaker-caption">
-        <h3>
-          {speaker.name}
-          {speaker.linkedin && (
-            <ArrowUpRight className="la-speaker-arrow" aria-hidden="true" />
-          )}
-        </h3>
-        <p>{[speaker.role, speaker.org].filter(Boolean).join(" · ")}</p>
-      </div>
-    </>
+        </>
+      )}
+      {speaker.status === "tbc" && (
+        <Pill tone="white" className="lp-speaker-status">
+          Por confirmar
+        </Pill>
+      )}
+    </div>
+  );
+  const heading = (
+    <div className="lp-speaker-head">
+      <h3>
+        {speaker.name}
+        {speaker.linkedin && <ArrowUpRight aria-hidden="true" />}
+      </h3>
+      <p>{[speaker.role, speaker.org].filter(Boolean).join(" · ")}</p>
+    </div>
   );
   return (
-    <article className="la-speaker" id={`speaker-${speaker.id}`}>
+    <li className="lp-speaker" id={`speaker-${speaker.id}`}>
       {speaker.linkedin ? (
         <a
           href={speaker.linkedin}
-          className="la-speaker-link"
+          className="lp-speaker-link"
           {...external}
-          aria-label={`${speaker.name}, ${speaker.role} en ${speaker.org}. Perfil de LinkedIn (nueva pestaña)`}
+          aria-label={`${speaker.name}, ${speaker.role} · ${speaker.org}. LinkedIn (nueva pestaña)`}
         >
-          {caption}
+          {media}
+          {heading}
         </a>
       ) : (
-        <div className="la-speaker-link">{caption}</div>
+        <div className="lp-speaker-link">
+          {media}
+          {heading}
+        </div>
       )}
-      <p className="la-speaker-bio">{speaker.bio}</p>
-      <div className="la-speaker-foot">
+      <p className="lp-speaker-bio">{speaker.bio}</p>
+      <div className="lp-speaker-foot">
         {speaker.company ? (
-          <CompanyLogo company={speaker.company} height={16} />
+          <CompanyLogo company={speaker.company} height={15} />
         ) : (
-          <span className="la-speaker-org">{session?.kind}</span>
+          <span>{session?.kind}</span>
         )}
         {session && (
-          <a href={`#slot-${session.id}`} className="la-speaker-session">
+          <a href={`#slot-${session.id}`}>
             {formatTimeRange(session.start)}
             <ArrowRight aria-hidden="true" />
           </a>
         )}
       </div>
-    </article>
+    </li>
   );
 }
 
-function Ticket() {
+function Pass() {
   return (
     <a
       href={summit.registrationUrl}
-      className="la-ticket"
+      className="lp-pass"
       {...external}
-      aria-label="Pase al LATAM AI Summit: regístrate en Partiful (nueva pestaña)"
+      aria-label={REGISTER_LABEL}
     >
-      <div className="la-ticket-main">
-        <div className="la-ticket-top">
-          <span>Admit one</span>
-          <span>N° 2026·10·07</span>
+      <div className="lp-pass-card">
+        <div className="lp-pass-head">
+          <LogoMark />
+          <span>Pase general</span>
         </div>
-        <p className="la-ticket-title">
-          <span>LATAM</span>
-          <span>AI Summit</span>
-        </p>
-        <dl className="la-ticket-grid">
+        <p className="lp-pass-title">San Francisco</p>
+        <dl className="lp-pass-grid">
           <div>
             <dt>Fecha</dt>
-            <dd>07.10.2026</dd>
+            <dd>Mié 07.10.2026</dd>
           </div>
           <div>
             <dt>Hora</dt>
-            <dd>10:00 PT</dd>
+            <dd>10:00 a.m. PT</dd>
           </div>
           <div>
             <dt>Lugar</dt>
             <dd>Consulado de Colombia</dd>
           </div>
           <div>
-            <dt>Idioma</dt>
-            <dd>Español</dd>
+            <dt>Entrada</dt>
+            <dd>Gratuita</dd>
           </div>
         </dl>
-      </div>
-      <div className="la-ticket-stub">
-        <span className="la-barcode" aria-hidden="true" />
-        <span className="la-ticket-cta">
-          Regístrate <ArrowUpRight aria-hidden="true" />
-        </span>
-        <span className="la-ticket-tag">{summit.hashtag}</span>
+        <div className="lp-pass-perf" aria-hidden="true" />
+        <div className="lp-pass-foot">
+          <span>{summit.hashtag}</span>
+          <span className="lp-pass-cta">
+            Reservar lugar <ArrowUpRight aria-hidden="true" />
+          </span>
+        </div>
       </div>
     </a>
   );
@@ -306,6 +329,10 @@ const eventSchema = {
       addressCountry: "US",
     },
   },
+  organizer: consulates.map((consulate) => ({
+    "@type": "GovernmentOrganization",
+    name: consulate.name,
+  })),
   offers: {
     "@type": "Offer",
     url: summit.registrationUrl,
@@ -320,286 +347,296 @@ const eventSchema = {
 
 export default function SummitPage() {
   return (
-    <div className="la-page" id="top">
+    <div className="lp" id="top">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(eventSchema) }}
       />
-      <a className="la-skip" href="#contenido">
+      <a className="lp-skip" href="#contenido">
         Ir al contenido
       </a>
-      <header className="la-header">
-        <div className="la-shell la-header-inner">
-          <a href="#top" className="la-logo" aria-label="LATAM AI Summit, inicio">
+
+      <header className="lp-nav">
+        <div className="ds-frame lp-nav-inner">
+          <a href="#top" aria-label="LATAM AI Summit, inicio">
             <LogoMark />
-            <span>
-              <strong>LATAM AI Summit</strong>
-              <small>{summit.hashtag} · 07.10.2026</small>
-            </span>
           </a>
-          <nav aria-label="Secciones">
+          <nav className="lp-nav-links" aria-label="Secciones">
             <a href="#agenda">Agenda</a>
             <a href="#speakers">Speakers</a>
+            <a href="#consulados">Consulados</a>
             <a href="#lugar">Lugar</a>
-            <RegisterButton className="la-nav-cta">Regístrate</RegisterButton>
           </nav>
+          <div className="lp-nav-actions">
+            <Button
+              variant="secondary"
+              href={googleCalendarUrl}
+              external
+              icon={<CalendarPlus aria-hidden="true" />}
+              className="lp-nav-calendar"
+            >
+              Agendar
+            </Button>
+            <Button href={summit.registrationUrl} external label={REGISTER_LABEL}>
+              Regístrate
+            </Button>
+          </div>
         </div>
       </header>
 
       <main id="contenido">
-        <section className="la-hero" aria-labelledby="summit-title">
-          <GoldenGateAscii />
-          <div className="la-hero-content la-shell">
-            <div className="la-hero-top">
-              <span className="la-status">
-                <span aria-hidden="true" />
-                Registro abierto · Cupo limitado
-              </span>
-              <span className="la-hero-location">
-                San Francisco, CA{" "}
-                <span aria-hidden="true">[ 37.7749° N · 122.4194° W ]</span>
-              </span>
-            </div>
-            <div className="la-hero-title">
-              <p className="la-kicker">
-                {summit.hashtag} <span aria-hidden="true">/</span> Evento en
-                español
-              </p>
-              <h1 id="summit-title">
-                <span className="la-title-main">LATAM</span>
-                <span className="la-title-sub">
-                  AI Summit
-                  <span className="la-cursor" aria-hidden="true">
-                    _
-                  </span>
-                </span>
+        <section className="ds-band lp-hero-band" aria-labelledby="summit-title">
+          <div className="ds-frame lp-hero">
+            <div className="lp-hero-copy">
+              <Pill tone="white">
+                <span className="lp-live-dot" aria-hidden="true" />
+                {summit.hashtag} · Evento en español
+              </Pill>
+              <h1 id="summit-title" className="ds-display-xl">
+                LATAM AI Summit
               </h1>
-              <p className="la-hero-lead">
-                Latinoamérica no está viendo el próximo cambio tecnológico desde
-                la barrera. <strong>Lo está construyendo.</strong>
-              </p>
             </div>
-            <div className="la-hero-bottom">
-              <dl className="la-hero-facts">
+            <div className="lp-hero-aside">
+              <p>
+                Latinoamérica no está viendo el próximo cambio tecnológico
+                desde la barrera. Lo está construyendo.
+              </p>
+              <div className="lp-actions">
+                <Button
+                  size="lg"
+                  href={summit.registrationUrl}
+                  external
+                  label={REGISTER_LABEL}
+                >
+                  Regístrate gratis
+                </Button>
+                <Button
+                  size="lg"
+                  variant="secondary"
+                  href="#agenda"
+                  icon={<ArrowRight aria-hidden="true" />}
+                >
+                  Ver agenda
+                </Button>
+              </div>
+            </div>
+
+            <figure className="lp-stage ds-media">
+              <Image
+                src={HERO_PHOTO}
+                alt="Una torre del Golden Gate emerge sobre la niebla de San Francisco al atardecer."
+                fill
+                priority
+                quality={90}
+                sizes="(max-width: 1248px) 100vw, 1200px"
+              />
+              <div className="lp-stage-top">
+                <Pill tone="white">
+                  <time dateTime={summit.startsAt}>{summit.dateLabel}</time>
+                </Pill>
+                <Pill tone="white" className="lp-stage-countdown">
+                  <Countdown />
+                </Pill>
+              </div>
+              <dl className="lp-stage-facts">
                 <div>
-                  <dt>Cuándo</dt>
-                  <dd>
-                    <time dateTime={summit.startsAt}>{summit.dateLabel}</time>
-                    <span>{summit.timeLabel}</span>
-                  </dd>
+                  <dt>Hora</dt>
+                  <dd>{summit.timeLabel}</dd>
                 </div>
                 <div>
-                  <dt>Dónde</dt>
-                  <dd>
-                    {summit.venue.shortName}
-                    <span>San Francisco, CA</span>
-                  </dd>
+                  <dt>Lugar</dt>
+                  <dd>{summit.venue.name}</dd>
                 </div>
-                <div className="la-hero-countdown">
-                  <dt>Cuenta regresiva</dt>
-                  <dd>
-                    <Countdown />
-                    <span>Entrada gratuita</span>
-                  </dd>
+                <div>
+                  <dt>Idioma</dt>
+                  <dd>Español</dd>
+                </div>
+                <div>
+                  <dt>Entrada</dt>
+                  <dd>Gratuita, cupo limitado</dd>
                 </div>
               </dl>
-              <RegisterButton />
-            </div>
+            </figure>
           </div>
         </section>
 
         <section
-          className="la-consulates la-shell"
+          className="ds-band"
+          id="consulados"
           aria-labelledby="consulates-title"
         >
-          <h2 id="consulates-title">
-            Una iniciativa de <strong>siete consulados</strong> latinoamericanos
-            en San Francisco
-          </h2>
-          <Flags />
+          <div className="ds-frame lp-wall">
+            <div className="lp-wall-head">
+              <h2 id="consulates-title">
+                Una iniciativa de siete consulados latinoamericanos en San
+                Francisco
+              </h2>
+              <Pill tone="white">
+                <Image src="/images/flags/co.webp" alt="" width={18} height={12} />
+                Lidera el Consulado General de Colombia
+              </Pill>
+            </div>
+            <ul className="lp-wall-grid lp-consulates">
+              {consulates.map((consulate) => (
+                <li key={consulate.country} data-leads={consulate.leads ?? false}>
+                  <Image
+                    src={consulate.logo.src}
+                    alt={consulate.name}
+                    width={Math.round(56 * consulate.logo.ratio)}
+                    height={56}
+                    style={{ "--ratio": consulate.logo.ratio } as React.CSSProperties}
+                  />
+                  <span className="lp-wall-caption">{consulate.country}</span>
+                </li>
+              ))}
+              <li className="lp-wall-note">
+                <p>Siete países. Una comunidad. Un mismo idioma.</p>
+              </li>
+            </ul>
+          </div>
         </section>
 
-        <section className="la-about la-shell" aria-labelledby="about-title">
-          <div className="la-section-heading">
-            <div>
-              <span className="la-eyebrow">[ 01 ] El summit</span>
-              <h2 id="about-title">
-                Un día. Una comunidad.
-                <br /> Un idioma.
-              </h2>
-            </div>
-            <p>
-              No es otra conferencia. Es un espacio para reunir a la región,
-              intercambiar ideas sin traducción y crear conexiones que sigan
-              después de SF Tech Week.
-            </p>
+        <section className="ds-band" aria-labelledby="about-title">
+          <div className="ds-frame ds-section">
+            <SectionHeading
+              id="about-title"
+              eyebrow="El summit"
+              title="Un día, una comunidad, un idioma"
+            >
+              <p>
+                Un encuentro en español que conecta a quienes construyen,
+                invierten y escalan tecnología en Latinoamérica con la
+                experiencia, el capital y las redes de Silicon Valley.
+              </p>
+            </SectionHeading>
+            <ul className="lp-themes">
+              {themes.map((theme) => {
+                const Icon = themeIcons[theme.icon];
+                return (
+                  <li key={theme.title} className="ds-card">
+                    <span className="ds-icon-tile">
+                      <Icon aria-hidden="true" />
+                    </span>
+                    <h3>{theme.title}</h3>
+                    <p>{theme.text}</p>
+                  </li>
+                );
+              })}
+            </ul>
           </div>
-          <div className="la-about-grid">
-            <p className="la-about-lead">
-              Un encuentro en español que conecta a quienes construyen,
-              invierten y escalan tecnología en Latinoamérica con la
-              experiencia, el capital y las redes de{" "}
-              <span>Silicon Valley.</span>
-            </p>
-            <ol className="la-themes" aria-label="Temas de conversación">
-              {themes.map((theme, index) => (
-                <li key={theme}>
-                  <span aria-hidden="true">
-                    {String(index + 1).padStart(2, "0")}
-                  </span>
-                  {theme}
-                </li>
+        </section>
+
+        <section className="ds-band" id="agenda" aria-labelledby="agenda-title">
+          <div className="ds-frame ds-section">
+            <SectionHeading id="agenda-title" eyebrow="Programa" title="La agenda">
+              <p>
+                {summit.dateLabel}, hora de San Francisco (PT). Agenda tentativa,
+                sujeta a cambios.
+              </p>
+              <div className="lp-actions">
+                <Button
+                  variant="secondary"
+                  href={googleCalendarUrl}
+                  external
+                  icon={<CalendarPlus aria-hidden="true" />}
+                >
+                  Google Calendar
+                </Button>
+                <Button
+                  variant="secondary"
+                  href="/latam-ai-summit.ics"
+                  download
+                  icon={<CalendarPlus aria-hidden="true" />}
+                >
+                  Apple / Outlook
+                </Button>
+              </div>
+            </SectionHeading>
+            <ol className="lp-agenda">
+              {agenda.map((item) => (
+                <AgendaRow key={item.id} item={item} />
               ))}
             </ol>
           </div>
-          <dl className="la-stats">
-            <div>
-              <dt>Consulados aliados</dt>
-              <dd>07</dd>
-            </div>
-            <div>
-              <dt>Invitados</dt>
-              <dd>150–200</dd>
-            </div>
-            <div>
-              <dt>Personas en el encuentro anterior</dt>
-              <dd>~300</dd>
-            </div>
-            <div>
-              <dt>Idioma del evento</dt>
-              <dd>ES</dd>
-            </div>
-          </dl>
         </section>
 
         <section
-          className="la-agenda la-shell"
-          id="agenda"
-          aria-labelledby="agenda-title"
-        >
-          <div className="la-section-heading">
-            <div>
-              <span className="la-eyebrow">[ 02 ] Programa</span>
-              <h2 id="agenda-title">La agenda.</h2>
-            </div>
-            <p>
-              {summit.dateLabel}
-              <br />
-              Hora de San Francisco (PT). Agenda tentativa, sujeta a cambios.
-            </p>
-          </div>
-          <ol className="la-timeline">
-            {agenda.map((item) => (
-              <AgendaSlot key={item.id} item={item} />
-            ))}
-          </ol>
-          <div className="la-agenda-cta">
-            <p>Cupo limitado. El registro se hace en Partiful.</p>
-            <RegisterButton>Reserva tu lugar</RegisterButton>
-          </div>
-        </section>
-
-        <section
-          className="la-speakers la-shell"
+          className="ds-band"
           id="speakers"
           aria-labelledby="speakers-title"
         >
-          <div className="la-section-heading">
-            <div>
-              <span className="la-eyebrow">[ 03 ] Speakers</span>
-              <h2 id="speakers-title">Las voces.</h2>
-            </div>
-            <p>
-              Latinoamericanos que construyen, investigan e invierten en la
-              frontera de la IA. Más nombres muy pronto.
-            </p>
-          </div>
-          <div className="la-speaker-grid">
-            {speakers.map((speaker) => (
-              <SpeakerCard key={speaker.id} speaker={speaker} />
-            ))}
-          </div>
-          <div className="la-companies">
-            <div className="la-companies-group">
-              <h3>En la agenda</h3>
-              <ul>
-                {confirmedCompanies.map((company) => (
-                  <li key={company.name}>
-                    <a
-                      href={company.url}
-                      {...external}
-                      aria-label={`${company.name} (nueva pestaña)`}
-                    >
-                      <CompanyLogo company={company} height={24} />
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div className="la-companies-group" data-invited="true">
-              <h3>Invitados · por confirmar</h3>
-              <ul>
-                {invitedCompanies.map((company) => (
-                  <li key={company.name}>
-                    <a
-                      href={company.url}
-                      {...external}
-                      aria-label={`${company.name} (nueva pestaña)`}
-                    >
-                      <CompanyLogo company={company} height={24} />
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-          <p className="la-note">
-            Participaciones sujetas a confirmación. Los logos identifican a la
-            organización de cada speaker y no implican patrocinio del evento.
-          </p>
-        </section>
-
-        <section
-          className="la-community la-shell"
-          aria-labelledby="community-title"
-        >
-          <div className="la-section-heading">
-            <div>
-              <span className="la-eyebrow">[ 04 ] La comunidad</span>
-              <h2 id="community-title">
-                Desde Silicon Valley
-                <br /> para toda Latinoamérica.
-              </h2>
-            </div>
-            <p>
-              Nuestro encuentro anterior reunió a cerca de 300 personas. Esta
-              vez pensamos más grande: más países, más conversaciones y más
-              conexiones.
-            </p>
-          </div>
-          <EventCarousel />
-        </section>
-
-        <section
-          className="la-venue"
-          id="lugar"
-          aria-labelledby="venue-title"
-        >
-          <div className="la-shell la-venue-grid">
-            <div className="la-venue-copy">
-              <span className="la-venue-marker" aria-hidden="true">
-                [ + ]
-              </span>
-              <h2 id="venue-title">
-                Nos vemos en
-                <br />
-                <span>San Francisco.</span>
-              </h2>
+          <div className="ds-frame ds-section">
+            <SectionHeading
+              id="speakers-title"
+              eyebrow="Speakers"
+              title="Las voces del summit"
+            >
               <p>
+                Latinoamericanos que invierten, investigan y construyen en la
+                frontera de la IA. Más nombres muy pronto.
+              </p>
+            </SectionHeading>
+            <ul className="lp-speakers">
+              {speakers.map((speaker) => (
+                <SpeakerCard key={speaker.id} speaker={speaker} />
+              ))}
+            </ul>
+          </div>
+        </section>
+
+        <section className="ds-band" aria-labelledby="companies-title">
+          <div className="ds-frame lp-wall">
+            <div className="lp-wall-head">
+              <h2 id="companies-title">Compañías en la conversación</h2>
+              <p>Participaciones sujetas a confirmación</p>
+            </div>
+            <ul className="lp-wall-grid lp-companies">
+              {confirmedCompanies.map((company) => (
+                <li key={company.name}>
+                  <a
+                    href={company.url}
+                    {...external}
+                    aria-label={`${company.name} (nueva pestaña)`}
+                  >
+                    <CompanyLogo company={company} height={24} />
+                  </a>
+                  <span className="lp-wall-caption">En la agenda</span>
+                </li>
+              ))}
+              {invitedCompanies.map((company) => (
+                <li key={company.name} data-invited="true">
+                  <a
+                    href={company.url}
+                    {...external}
+                    aria-label={`${company.name}, por confirmar (nueva pestaña)`}
+                  >
+                    <CompanyLogo company={company} height={24} />
+                  </a>
+                  <span className="lp-wall-caption">Por confirmar</span>
+                </li>
+              ))}
+              <li className="lp-wall-note">
+                <p>
+                  Los logos identifican a cada organización y no implican
+                  patrocinio.
+                </p>
+              </li>
+            </ul>
+          </div>
+        </section>
+
+        <section className="ds-band" id="lugar" aria-labelledby="venue-title">
+          <div className="ds-frame ds-section lp-register">
+            <div className="lp-register-copy">
+              <p className="ds-eyebrow">Lugar y registro</p>
+              <h2 id="venue-title" className="ds-display-l">
+                Nos vemos en San Francisco
+              </h2>
+              <p className="lp-register-lead">
                 Cupo limitado. Regístrate en Partiful para asegurar tu lugar y
                 recibir las novedades del evento.
               </p>
-              <dl className="la-venue-details">
+              <dl className="lp-register-facts">
                 <div>
                   <dt>Cuándo</dt>
                   <dd>
@@ -617,66 +654,119 @@ export default function SummitPage() {
                   </dd>
                 </div>
               </dl>
-              <div className="la-venue-actions">
-                <RegisterButton />
-                <a
-                  href={summit.venue.mapsUrl}
-                  className="la-button la-button-ghost"
-                  {...external}
+              <div className="lp-actions">
+                <Button
+                  size="lg"
+                  href={summit.registrationUrl}
+                  external
+                  label={REGISTER_LABEL}
                 >
-                  <MapPin aria-hidden="true" /> Cómo llegar
-                </a>
+                  Regístrate en Partiful
+                </Button>
+                <Button
+                  variant="secondary"
+                  size="lg"
+                  href={summit.venue.mapsUrl}
+                  external
+                  icon={<MapPin aria-hidden="true" />}
+                >
+                  Cómo llegar
+                </Button>
               </div>
-              <p className="la-calendar-links">
-                <CalendarPlus aria-hidden="true" />
-                Agregar al calendario:{" "}
-                <a href={googleCalendarUrl} {...external}>
-                  Google
-                </a>
-                <span aria-hidden="true">·</span>
-                <a href="/latam-ai-summit.ics" download>
-                  Apple / Outlook
-                </a>
-              </p>
             </div>
-            <Ticket />
+            <div className="lp-register-visual">
+              <div className="lp-register-photo ds-media">
+                <Image
+                  src={VENUE_PHOTO}
+                  alt="El Golden Gate entre la niebla al atardecer."
+                  fill
+                  sizes="(max-width: 1100px) 100vw, 560px"
+                  quality={86}
+                />
+              </div>
+              <Pass />
+            </div>
           </div>
         </section>
       </main>
 
-      <footer className="la-footer la-shell">
-        <div className="la-footer-main">
-          <a href="#top" className="la-logo" aria-label="Volver arriba">
-            <LogoMark size={24} />
-            <span>
-              <strong>LATAM AI Summit</strong>
-              <small>San Francisco · 2026</small>
-            </span>
-          </a>
-          <p>
-            Parte de{" "}
-            <a href={summit.techWeekUrl} {...external}>
-              {summit.hashtag}
-            </a>
-            , una semana de eventos del ecosistema tech en San Francisco.
-          </p>
-          <RegisterButton className="la-footer-cta">Regístrate</RegisterButton>
+      <footer className="ds-band lp-footer">
+        <div className="ds-frame lp-footer-inner">
+          <div className="lp-footer-brand">
+            <LogoMark />
+            <p>
+              Un encuentro en español para la comunidad tech de Latinoamérica.
+              San Francisco, 7 de octubre de 2026.
+            </p>
+          </div>
+          <nav className="lp-footer-nav" aria-label="Pie de página">
+            <div>
+              <h2>Evento</h2>
+              <a href="#agenda">Agenda</a>
+              <a href="#speakers">Speakers</a>
+              <a href="#consulados">Consulados</a>
+              <a href="#lugar">Lugar</a>
+            </div>
+            <div>
+              <h2>Registro</h2>
+              <a href={summit.registrationUrl} {...external}>
+                Partiful
+              </a>
+              <a href={googleCalendarUrl} {...external}>
+                Google Calendar
+              </a>
+              <a href="/latam-ai-summit.ics" download>
+                Apple / Outlook
+              </a>
+              <a href={summit.venue.mapsUrl} {...external}>
+                Cómo llegar
+              </a>
+            </div>
+            <div>
+              <h2>Consulados</h2>
+              {consulates.map((consulate) => (
+                <span key={consulate.country}>{consulate.country}</span>
+              ))}
+            </div>
+            <div>
+              <h2>SF Tech Week</h2>
+              <a href={summit.techWeekUrl} {...external}>
+                tech-week.com
+              </a>
+            </div>
+          </nav>
         </div>
-        <p className="la-credit">
-          Fotografía del Golden Gate:{" "}
-          <a
-            href="https://commons.wikimedia.org/wiki/File:GoldenGateBridge-001.jpg"
-            {...external}
-          >
-            Rich Niewiroski Jr. · CC BY 2.5
-          </a>
-          , reflejada y convertida a ASCII.
-        </p>
+        <div className="ds-frame lp-footer-base">
+          <p>© 2026 LATAM AI Summit · San Francisco, CA</p>
+          <p>
+            Fotos:{" "}
+            <a
+              href="https://commons.wikimedia.org/wiki/File:The_Bridge_(August_2013).jpg"
+              {...external}
+            >
+              Frank Schulenburg
+            </a>{" "}
+            y{" "}
+            <a
+              href="https://commons.wikimedia.org/wiki/File:Golden_Gate_Bridge_at_sunset_1.jpg"
+              {...external}
+            >
+              Brocken Inaglory
+            </a>
+            , CC BY-SA 3.0.
+          </p>
+        </div>
       </footer>
 
-      <RegisterButton className="la-mobile-cta">
+      <Button
+        href={summit.registrationUrl}
+        external
+        size="lg"
+        className="lp-mobile-cta"
+        label={REGISTER_LABEL}
+      >
         Regístrate · 7 de octubre
-      </RegisterButton>
+      </Button>
     </div>
   );
 }

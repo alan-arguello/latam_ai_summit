@@ -44,6 +44,8 @@ export type Company = {
   // Width / height. Wordmarks (ratio > 1) already include the name;
   // square symbols get a text label next to them.
   ratio: number;
+  // Optical size correction so every mark reads at the same visual weight.
+  scale?: number;
 };
 
 const company = (
@@ -51,10 +53,11 @@ const company = (
   logo: string,
   url: string,
   ratio = 1,
-): Company => ({ name, logo: `/images/logos/${logo}`, url, ratio });
+  scale = 1,
+): Company => ({ name, logo: `/images/logos/${logo}`, url, ratio, scale });
 
 export const companies = {
-  latitud: company("Latitud", "latitud.svg", "https://latitud.com", 121 / 36),
+  latitud: company("Latitud", "latitud.svg", "https://latitud.com", 121 / 36, 1.35),
   openai: company("OpenAI", "openai.svg", "https://openai.com"),
   replit: company("Replit", "replit.svg", "https://replit.com"),
   palantir: company("Palantir", "palantir.svg", "https://www.palantir.com"),
@@ -64,7 +67,7 @@ export const companies = {
     "perplexity.svg",
     "https://www.perplexity.ai",
   ),
-  runway: company("Runway", "runway.svg", "https://runwayml.com", 84 / 19),
+  runway: company("Runway", "runway.svg", "https://runwayml.com", 84 / 19, 0.82),
 } as const;
 
 // Companies with a slot in the agenda vs. invited and still unconfirmed.
@@ -80,16 +83,48 @@ export const invitedCompanies = [
   companies.runway,
 ];
 
-export type Consulate = { country: string; flag: string; leads?: boolean };
+export type Consulate = {
+  country: string;
+  name: string;
+  flag: string;
+  // Official mark supplied for the partner deck (or the ministry's own site).
+  logo: { src: string; ratio: number };
+  leads?: boolean;
+};
+
+const consulate = (
+  code: string,
+  country: string,
+  name: string,
+  ratio: number,
+  leads = false,
+): Consulate => ({
+  country,
+  name,
+  flag: `/images/flags/${code}.webp`,
+  logo: { src: `/images/consulates/${code}.webp`, ratio },
+  leads,
+});
 
 export const consulates: Consulate[] = [
-  { country: "Colombia", flag: "/images/flags/co.webp", leads: true },
-  { country: "Perú", flag: "/images/flags/pe.webp" },
-  { country: "Chile", flag: "/images/flags/cl.webp" },
-  { country: "Uruguay", flag: "/images/flags/uy.webp" },
-  { country: "Brasil", flag: "/images/flags/br.webp" },
-  { country: "México", flag: "/images/flags/mx.webp" },
-  { country: "Guatemala", flag: "/images/flags/gt.webp" },
+  consulate(
+    "co",
+    "Colombia",
+    "Consulado General de Colombia en San Francisco",
+    1.564,
+    true,
+  ),
+  consulate("pe", "Perú", "Consulado General del Perú en San Francisco", 5.123),
+  consulate("cl", "Chile", "Consulado General de Chile en San Francisco", 1.1),
+  consulate("uy", "Uruguay", "Consulado de Uruguay en San Francisco", 2.706),
+  consulate("br", "Brasil", "Consulado General de Brasil en San Francisco", 2.191),
+  consulate("mx", "México", "Consulado General de México en San Francisco", 3.525),
+  consulate(
+    "gt",
+    "Guatemala",
+    "Consulado General de Guatemala en San Francisco",
+    2.385,
+  ),
 ];
 
 export type Speaker = {
@@ -260,38 +295,27 @@ export const agenda: AgendaItem[] = [
 ];
 
 export const themes = [
-  "Cómo el cambio tecnológico está transformando Latinoamérica.",
-  "Qué se necesita para construir una compañía global desde la región.",
-  "El capital, las redes y las oportunidades para competir globalmente.",
-  "Conexiones reales entre founders, inversionistas, operadores y builders.",
-];
-
-export const pastEvents = [
   {
-    image: "/images/events/builders-night.webp",
-    alt: "Builders' Night en el Consulado General de Colombia en San Francisco",
+    icon: "spark",
+    title: "El cambio tecnológico",
+    text: "Cómo la IA está transformando Latinoamérica, y qué hacer al respecto.",
   },
   {
-    image: "/images/events/ai-native-consulate.webp",
-    alt: "Participantes de un encuentro sobre empresas AI Native en el Consulado de Colombia en San Francisco",
+    icon: "globe",
+    title: "Compañías globales",
+    text: "Qué se necesita para construir una compañía global desde la región.",
   },
   {
-    image: "/images/events/founder-summit.webp",
-    alt: "Encuentro de fundadores y líderes de tecnología en Latinoamérica",
+    icon: "capital",
+    title: "Capital y redes",
+    text: "El capital, las redes y las oportunidades para competir en el mundo.",
   },
   {
-    image: "/images/events/tactical-conversation.webp",
-    alt: "Conversación con fundadores y operadores de tecnología",
+    icon: "people",
+    title: "Conexiones reales",
+    text: "Founders, inversionistas, operadores y builders en un mismo lugar.",
   },
-  {
-    image: "/images/events/private-workshop.webp",
-    alt: "Encuentro privado para builders",
-  },
-  {
-    image: "/images/events/community-summit.webp",
-    alt: "Comunidad de fundadores reunida durante un summit",
-  },
-];
+] as const;
 
 function toMinutes(time: string) {
   const [hours, minutes] = time.split(":").map(Number);

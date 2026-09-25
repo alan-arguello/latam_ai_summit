@@ -2,11 +2,19 @@
 
 Landing del LATAM AI Summit (#SFTechWeek): miércoles 7 de octubre de 2026, 10:00 a.m. – 3:00 p.m. PT, en el Consulado General de Colombia en San Francisco.
 
-- Info del evento, agenda tentativa, speakers, compañías, consulados, fotos de eventos anteriores y ubicación.
+- Info del evento, agenda tentativa, speakers, compañías, logos oficiales de los 7 consulados y ubicación.
 - Todos los botones de registro llevan a Partiful: https://partiful.com/e/5bUpcnTFJ3nZUXUIvVbe
-- Hero con el Golden Gate en ASCII (efecto linterna con el mouse), retratos con hover ASCII, cuenta regresiva y agenda que marca la sesión "Ahora" durante el evento.
+- Cuenta regresiva y agenda que marca la sesión "Ahora" durante el evento.
 - Botones para Google Calendar y archivo `.ics` (Apple / Outlook), generado en `/latam-ai-summit.ics`.
 - 100 % estático: sin base de datos ni variables secretas.
+
+## Design system
+
+Inspirado en el lenguaje visual de elevenlabs.io: papel cálido (`#fdfcfc`), tinta negra, líneas finas de 1px como rieles de página, superficies redondeadas (24/20/14px) y fotografía real.
+
+- Tipografía: Host Grotesk Light para display (la alternativa libre más cercana a Waldenburg, la fuente de ElevenLabs), Inter para texto y Geist Mono para horarios.
+- Tokens y primitivos (botones, pills, cards, headings, marco): `src/app/design-system.css` y `src/components/ui.tsx`.
+- Composición de la página: `src/app/summit.css`.
 
 ## Desarrollo
 
@@ -26,9 +34,9 @@ npm run dev -- --port 3107
 ## Edición
 
 - **Todo el contenido** (fecha, lugar, link de registro, agenda, speakers, compañías, consulados, fotos): `src/lib/summit.ts`.
-- Estructura de la página: `src/app/page.tsx`. Estilos: `src/app/summit.css`.
+- Estructura de la página: `src/app/page.tsx`.
 - Imagen para compartir (Open Graph) y favicon: `npm run og` regenera `public/images/opengraph.png` y `src/app/icon.png`. Córrelo si cambias fecha, lugar o título.
-- Fotos de speakers: `public/images/speakers/` (formato 4:5). Logos: `public/images/logos/` (SVG blanco).
+- Fotos de speakers: `public/images/speakers/` (formato 4:5). Logos de compañías: `public/images/logos/` (SVG negro). Logos de consulados: `public/images/consulates/`.
 
 ## Pendientes de contenido
 
