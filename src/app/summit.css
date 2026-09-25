@@ -236,15 +236,6 @@
   max-width: 100%;
   object-fit: contain;
 }
-.lp-consulates > li[data-leads="true"]::before {
-  content: "Lidera";
-  position: absolute;
-  top: 12px;
-  left: 16px;
-  font-size: 0.75rem;
-  letter-spacing: 0.01em;
-  color: var(--ds-muted);
-}
 .lp-wall-grid > .lp-wall-note {
   place-items: center start;
   background: transparent;
@@ -964,12 +955,7 @@ a.lp-speaker-link:hover h3 svg {
     bottom: 9px;
     font-size: 0.6875rem;
   }
-  .lp-consulates > li[data-leads="true"]::before {
-    top: 9px;
-    left: 12px;
-    font-size: 0.6875rem;
-  }
-  .lp-wall-note {
+    .lp-wall-note {
     padding: 22px 14px;
   }
   .lp-wall-note p {

@@ -89,7 +89,6 @@ export type Consulate = {
   flag: string;
   // Official mark supplied for the partner deck (or the ministry's own site).
   logo: { src: string; ratio: number };
-  leads?: boolean;
 };
 
 const consulate = (
@@ -97,23 +96,15 @@ const consulate = (
   country: string,
   name: string,
   ratio: number,
-  leads = false,
 ): Consulate => ({
   country,
   name,
   flag: `/images/flags/${code}.webp`,
   logo: { src: `/images/consulates/${code}.webp`, ratio },
-  leads,
 });
 
 export const consulates: Consulate[] = [
-  consulate(
-    "co",
-    "Colombia",
-    "Consulado General de Colombia en San Francisco",
-    1.564,
-    true,
-  ),
+  consulate("co", "Colombia", "Consulado General de Colombia en San Francisco", 1.564),
   consulate("pe", "Perú", "Consulado General del Perú en San Francisco", 5.123),
   consulate("cl", "Chile", "Consulado General de Chile en San Francisco", 1.1),
   consulate("uy", "Uruguay", "Consulado de Uruguay en San Francisco", 2.706),

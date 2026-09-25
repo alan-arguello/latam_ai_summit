@@ -471,14 +471,11 @@ export default function SummitPage() {
                 Una iniciativa de siete consulados latinoamericanos en San
                 Francisco
               </h2>
-              <Pill tone="white">
-                <Image src="/images/flags/co.webp" alt="" width={18} height={12} />
-                Lidera el Consulado General de Colombia
-              </Pill>
+              <p>Un evento conjunto de toda la región</p>
             </div>
             <ul className="lp-wall-grid lp-consulates">
               {consulates.map((consulate) => (
-                <li key={consulate.country} data-leads={consulate.leads ?? false}>
+                <li key={consulate.country}>
                   <Image
                     src={consulate.logo.src}
                     alt={consulate.name}
