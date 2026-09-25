@@ -1,0 +1,35 @@
+{
+  "name": "latam-ai-summit-sf",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22.18.0"
+  },
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint",
+    "og": "node scripts/generate-og.mjs"
+  },
+  "dependencies": {
+    "geist": "1.7.2",
+    "lucide-react": "1.48.0",
+    "next": "16.3.6",
+    "react": "19.2.4",
+    "react-dom": "19.2.4"
+  },
+  "devDependencies": {
+    "@types/node": "20.19.43",
+    "@types/react": "19.2.17",
+    "@types/react-dom": "19.2.3",
+    "eslint": "9.39.5",
+    "eslint-config-next": "16.3.6",
+    "sharp": "0.35.4",
+    "typescript": "5.9.3"
+  },
+  "overrides": {
+    "postcss": "8.5.28"
+  }
+}
