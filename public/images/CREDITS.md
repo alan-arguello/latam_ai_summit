@@ -18,6 +18,10 @@ Fotos de perfil públicas de LinkedIn de cada persona, en `people/`. Donde exist
 
 Recortados y exportados a WebP sobre blanco, sin alterar su diseño.
 
+# Sponsors
+
+- American Legion Post 505 San Francisco y War Memorial Veterans Gallery: logos enviados por la organización; solo se quitó el fondo blanco de alrededor.
+
 # Supporters
 
 - HCCSF: logo enviado por la organización; solo se quitó el blanco alrededor del sello.

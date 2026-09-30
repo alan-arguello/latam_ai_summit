@@ -274,6 +274,13 @@
   padding: 40px 32px;
   transition: background-color var(--ds-base) var(--ds-ease);
 }
+/* Sponsors: two larger tiles above the supporters. */
+.lp-wall-grid.lp-sponsors {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.lp-sponsors > li {
+  min-height: 260px;
+}
 .lp-supporters a:hover {
   background: var(--ds-surface);
 }
@@ -1050,6 +1057,9 @@
   align-content: start;
   gap: 10px;
   font-size: 0.875rem;
+}
+.lp-footer-nav .lp-footer-sub {
+  margin-top: 14px;
 }
 .lp-footer-nav h2 {
   margin-bottom: 6px;

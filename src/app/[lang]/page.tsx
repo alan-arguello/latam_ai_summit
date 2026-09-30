@@ -30,6 +30,7 @@ import {
   speakerById,
   speakers,
   summit,
+  sponsors,
   supporters,
   themes,
   venueAddress,
@@ -418,7 +419,7 @@ function eventSchema({ lang, t }: Ctx) {
       "@type": "GovernmentOrganization",
       name: consulate.name[lang],
     })),
-    sponsor: supporters.map((partner) => ({
+    sponsor: [...sponsors, ...supporters].map((partner) => ({
       "@type": "Organization",
       name: partner.name,
       url: partner.url,
@@ -724,6 +725,40 @@ export default async function SummitPage({ params }: PageProps<"/[lang]">) {
           </div>
         </section>
 
+        <section className="ds-band" aria-labelledby="sponsors-title">
+          <div className="ds-frame lp-wall">
+            <div className="lp-wall-head">
+              <h2 id="sponsors-title">{t.sponsors.title}</h2>
+              <p>{t.sponsors.text}</p>
+            </div>
+            <ul className="lp-wall-grid lp-supporters lp-sponsors">
+              {sponsors.map((supporter) => (
+                <li key={supporter.name}>
+                  <a
+                    href={supporter.url}
+                    {...external}
+                    aria-label={`${supporter.name} (${t.a11y.newTab})`}
+                    style={
+                      {
+                        "--logo-h": `${logoHeight(supporter.logo, 16000, 150)}px`,
+                      } as React.CSSProperties
+                    }
+                  >
+                    <Image
+                      src={supporter.logo.src}
+                      alt={supporter.name}
+                      width={Math.round(240 * supporter.logo.ratio)}
+                      height={240}
+                      sizes="320px"
+                      quality={90}
+                    />
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+
         <section className="ds-band" aria-labelledby="supporters-title">
           <div className="ds-frame lp-wall">
             <div className="lp-wall-head">
@@ -859,7 +894,13 @@ export default async function SummitPage({ params }: PageProps<"/[lang]">) {
               ))}
             </div>
             <div>
-              <h2>{t.footer.supporters}</h2>
+              <h2>{t.footer.sponsors}</h2>
+              {sponsors.map((sponsor) => (
+                <a key={sponsor.name} href={sponsor.url} {...external}>
+                  {sponsor.shortName}
+                </a>
+              ))}
+              <h2 className="lp-footer-sub">{t.footer.supporters}</h2>
               {supporters.map((supporter) => (
                 <a key={supporter.name} href={supporter.url} {...external}>
                   {supporter.shortName}

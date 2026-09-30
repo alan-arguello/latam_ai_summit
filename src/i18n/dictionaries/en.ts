@@ -89,6 +89,10 @@ const en: Dictionary = {
     teamsTitle: "And the teams of all seven consulates",
     teamsText: "Colombia, Peru, Chile, Uruguay, Brazil, Mexico and Guatemala.",
   },
+  sponsors: {
+    title: "Sponsors",
+    text: "Thanks to those who make the summit possible",
+  },
   supporters: {
     title: "Supported by",
     text: "Organizations backing the summit",
@@ -121,6 +125,7 @@ const en: Dictionary = {
     registration: "Registration",
     consulates: "Consulates",
     supporters: "Supporters",
+    sponsors: "Sponsors",
     photos: "Photos",
     and: "and",
     rights: "© 2026 LATAM AI Summit · San Francisco, CA",

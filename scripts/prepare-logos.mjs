@@ -21,6 +21,8 @@ const logos = [
   { from: "assets/ascii-lineup/logos/pe.jpg", to: "public/images/consulates/pe.webp", key: true },
   { from: "assets/ascii-lineup/logos/gt.webp", to: "public/images/consulates/gt.webp" },
   { from: "assets/ascii-lineup/logos/hccsf.jpg", to: "public/images/supporters/hccsf.webp", clear: true, outside: true },
+  { from: "assets/sponsors/american-legion-post-505.png", to: "public/images/sponsors/american-legion-post-505.webp", clear: true, flood: true },
+  { from: "assets/sponsors/war-memorial.png", to: "public/images/sponsors/war-memorial.webp", clear: true },
   { from: "assets/supporters/ivy.png", to: "public/images/supporters/ivy.webp", clear: true },
   { from: "assets/supporters/emma.png", to: "public/images/supporters/emma.webp", clear: true },
   { from: "assets/supporters/torre.png", to: "public/images/supporters/torre.webp", clear: true, invert: true },
@@ -85,7 +87,28 @@ function sealCircle(data, width, height) {
   return circle;
 }
 
-for (const { from, to, key, invert, clear, outside } of logos) {
+// The white ground reachable from the image border (flood fill), so white or
+// light details enclosed by the mark keep their colour.
+function outerGround(data, width, height) {
+  const ground = new Uint8Array(width * height);
+  const white = (p) => Math.min(data[p * 4], data[p * 4 + 1], data[p * 4 + 2]) > 200;
+  const stack = [];
+  for (let x = 0; x < width; x++) stack.push(x, (height - 1) * width + x);
+  for (let y = 0; y < height; y++) stack.push(y * width, y * width + width - 1);
+  while (stack.length) {
+    const p = stack.pop();
+    if (ground[p] || !white(p)) continue;
+    ground[p] = 1;
+    const x = p % width;
+    if (x > 0) stack.push(p - 1);
+    if (x < width - 1) stack.push(p + 1);
+    if (p >= width) stack.push(p - width);
+    if (p < width * (height - 1)) stack.push(p + width);
+  }
+  return ground;
+}
+
+for (const { from, to, key, invert, clear, outside, flood } of logos) {
   let input = sharp(await readFile(asset(from)));
   // The Torre original is small: upsample before repainting for clean edges.
   if (invert) input = sharp(await input.resize({ width: 1396, kernel: "lanczos3" }).toBuffer());
@@ -96,10 +119,23 @@ for (const { from, to, key, invert, clear, outside } of logos) {
     const seal = outside ? sealCircle(data, info.width, info.height) : null;
     if (seal) console.log(`  seal rim: centre ${seal.cx.toFixed(1)}, ${seal.cy.toFixed(1)}  radius ${seal.r.toFixed(1)}`);
     const inside = (p) => Math.hypot((p % info.width) - seal.cx, Math.floor(p / info.width) - seal.cy) < seal.r - 1;
+    // With `flood`, only the ground reached from the border, plus a 2 px rim
+    // for the anti-aliased edge, is keyed.
+    const ground = flood ? outerGround(data, info.width, info.height) : null;
+    const nearGround = (p) => {
+      const x = p % info.width;
+      for (let dy = -2; dy <= 2; dy++)
+        for (let dx = -2; dx <= 2; dx++) {
+          const q = p + dy * info.width + dx;
+          if (q >= 0 && q < ground.length && Math.abs((q % info.width) - x) <= 2 && ground[q]) return true;
+        }
+      return false;
+    };
     // White ground to transparency ("colour to alpha"): each pixel keeps the
     // colour that, laid over white, reproduces the original.
     for (let i = 0; i < data.length; i += 4) {
       if (seal && inside(i / 4)) continue;
+      if (ground && !nearGround(i / 4)) continue;
       const alpha = Math.max(...[0, 1, 2].map((c) => 255 - data[i + c])) / 255;
       for (let c = 0; c < 3; c++)
         data[i + c] = alpha ? Math.round((data[i + c] - 255 * (1 - alpha)) / alpha) : 255;

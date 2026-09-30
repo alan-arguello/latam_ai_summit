@@ -199,6 +199,22 @@ export type Partner = {
   logo: Logo;
 };
 
+// Sponsors: logos prepared by scripts/prepare-logos.mjs.
+export const sponsors: Partner[] = [
+  {
+    name: "American Legion Post 505 San Francisco",
+    shortName: "American Legion Post 505",
+    url: "https://www.legion.org",
+    logo: { src: "/images/sponsors/american-legion-post-505.webp", ratio: 0.746 },
+  },
+  {
+    name: "War Memorial Veterans Gallery",
+    shortName: "War Memorial Veterans Gallery",
+    url: "https://sfwarmemorial.org",
+    logo: { src: "/images/sponsors/war-memorial.webp", ratio: 3.249 },
+  },
+];
+
 // Supporters: logos prepared by scripts/prepare-logos.mjs.
 export const supporters: Partner[] = [
   {

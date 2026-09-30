@@ -88,6 +88,10 @@ const es = {
     teamsTitle: "Y los equipos de los siete consulados",
     teamsText: "Colombia, Perú, Chile, Uruguay, Brasil, México y Guatemala.",
   },
+  sponsors: {
+    title: "Sponsors",
+    text: "Gracias a quienes hacen posible el summit",
+  },
   supporters: {
     title: "Con el apoyo de",
     text: "Organizaciones que respaldan el summit",
@@ -120,6 +124,7 @@ const es = {
     registration: "Registro",
     consulates: "Consulados",
     supporters: "Supporters",
+    sponsors: "Sponsors",
     photos: "Fotos",
     and: "y",
     rights: "© 2026 LATAM AI Summit · San Francisco, CA",
