@@ -2,6 +2,7 @@ import type { Viewport } from "next";
 import { notFound } from "next/navigation";
 import { Host_Grotesk, Inter } from "next/font/google";
 import { GeistMono } from "geist/font/mono";
+import { Analytics } from "@vercel/analytics/next";
 import { hasLocale, locales } from "@/i18n/config";
 
 import "../globals.css";
@@ -48,7 +49,10 @@ export default async function RootLayout({
       lang={lang}
       className={`${display.variable} ${text.variable} ${GeistMono.variable}`}
     >
-      <body>{children}</body>
+      <body>
+        {children}
+        <Analytics />
+      </body>
     </html>
   );
 }
