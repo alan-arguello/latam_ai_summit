@@ -93,6 +93,10 @@ const en: Dictionary = {
     title: "Sponsors",
     text: "Thanks to those who make the summit possible",
   },
+  sponsoringOrganizations: {
+    title: "Sponsored by",
+    text: "Organizations sponsoring the summit",
+  },
   supporters: {
     title: "Supported by",
     text: "Organizations backing the summit",

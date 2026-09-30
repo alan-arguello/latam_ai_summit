@@ -574,7 +574,7 @@
 
 /* ── Speakers ────────────────────────────────────────────────────────────── */
 
-/* Three per row, in agenda order: one session per row on desktop. The name
+/* Grouped by session on desktop. The name
    is the card's link (stretched over it); the session chip sits above it. */
 .lp-speakers {
   display: grid;
@@ -1152,7 +1152,7 @@
   .lp-speakers {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-  /* Nine speakers: the fireside chat closes the grid at full width. */
+  /* An unmatched final speaker closes the grid at full width. */
   .lp-speaker:last-child:nth-child(odd) {
     grid-column: 1 / -1;
   }
@@ -1468,3 +1468,15 @@
     box-shadow: var(--ds-float);
   }
 }
+
+/* Keep each panel together with four investment speakers on desktop. */
+@media (min-width: 1101px) {
+  .lp-speakers { grid-template-columns: repeat(12, minmax(0, 1fr)); }
+  .lp-speaker { grid-column: span 4; }
+  .lp-speaker:nth-child(-n + 4) { grid-column: span 3; }
+}
+
+/* A dedicated, centred wall for community support. */
+.lp-wall-grid.lp-community-supporters { grid-template-columns: 1fr; }
+.lp-community-supporters > li { min-height: 180px; }
+.lp-community-supporters img { filter: brightness(0); }

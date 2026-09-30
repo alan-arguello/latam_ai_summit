@@ -79,6 +79,7 @@ const company = (name: string, url: string, logo: string, ratio: number, scale?:
 });
 
 export const companies = {
+  flexi: company("Flexi.cx", "https://flexi.cx", "flexi.webp", 2.242),
   latitud: company("Latitud", "https://latitud.com", "latitud.svg", 4.605),
   wind: company("Copec WIND Ventures", "https://windventures.com", "copec-wind.webp", 5.394, 1.08),
   events: company("Events.com", "https://events.com", "events.svg", 7.968),
@@ -215,8 +216,8 @@ export const sponsors: Partner[] = [
   },
 ];
 
-// Supporters: logos prepared by scripts/prepare-logos.mjs.
-export const supporters: Partner[] = [
+// Sponsoring organizations: logos prepared by scripts/prepare-logos.mjs.
+export const sponsoringOrganizations: Partner[] = [
   {
     name: "Hispanic Chambers of Commerce of San Francisco",
     shortName: "HCCSF",
@@ -240,6 +241,15 @@ export const supporters: Partner[] = [
     shortName: "Torre.ai",
     url: "https://torre.ai",
     logo: { src: "/images/supporters/torre.webp", ratio: 4.592 },
+  },
+];
+
+export const supporters: Partner[] = [
+  {
+    name: "Blinka",
+    shortName: "Blinka",
+    url: companies.blinka.url,
+    logo: { src: "/images/supporters/blinka.svg", ratio: 140 / 44 },
   },
 ];
 
@@ -301,6 +311,19 @@ export const speakers: Speaker[] = [
     session: "panel-investment",
     image: photo("paolo-privitera"),
     linkedin: "https://www.linkedin.com/in/paoloprivitera/",
+  },
+  {
+    id: "franklin-marcelo",
+    name: "Franklin Marcelo",
+    role: { es: "Fundador y CEO", en: "Founder & CEO" },
+    company: companies.flexi,
+    bio: {
+      es: "Fundador y CEO de Flexi.cx, donde desarrolla soluciones de comunicación empresarial y atención al cliente con IA conversacional.",
+      en: "Founder and CEO of Flexi.cx, building business communication and customer service solutions with conversational AI.",
+    },
+    session: "panel-investment",
+    image: photo("franklin-marcelo"),
+    linkedin: "https://www.linkedin.com/in/franklinmarcelo/",
   },
   {
     id: "nicolas-lopez",
@@ -521,7 +544,7 @@ export const agenda: AgendaItem[] = [
       es: "Dónde está el capital, qué buscan hoy los inversionistas y qué oportunidades se abren para los founders de la región.",
       en: "Where the capital is, what investors look for today, and the opportunities opening up for founders from the region.",
     },
-    speakers: ["luisa-dalla-costa", "maria-gracia-lagos", "paolo-privitera"],
+    speakers: ["luisa-dalla-costa", "maria-gracia-lagos", "paolo-privitera", "franklin-marcelo"],
     highlight: true,
   },
   {

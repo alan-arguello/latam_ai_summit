@@ -31,6 +31,7 @@ import {
   speakers,
   summit,
   sponsors,
+  sponsoringOrganizations,
   supporters,
   themes,
   venueAddress,
@@ -419,7 +420,12 @@ function eventSchema({ lang, t }: Ctx) {
       "@type": "GovernmentOrganization",
       name: consulate.name[lang],
     })),
-    sponsor: [...sponsors, ...supporters].map((partner) => ({
+    sponsor: [...sponsors, ...sponsoringOrganizations].map((partner) => ({
+      "@type": "Organization",
+      name: partner.name,
+      url: partner.url,
+    })),
+    contributor: supporters.map((partner) => ({
       "@type": "Organization",
       name: partner.name,
       url: partner.url,
@@ -759,13 +765,47 @@ export default async function SummitPage({ params }: PageProps<"/[lang]">) {
           </div>
         </section>
 
+        <section className="ds-band" aria-labelledby="sponsoring-organizations-title">
+          <div className="ds-frame lp-wall">
+            <div className="lp-wall-head">
+              <h2 id="sponsoring-organizations-title">{t.sponsoringOrganizations.title}</h2>
+              <p>{t.sponsoringOrganizations.text}</p>
+            </div>
+            <ul className="lp-wall-grid lp-supporters">
+              {sponsoringOrganizations.map((supporter) => (
+                <li key={supporter.name}>
+                  <a
+                    href={supporter.url}
+                    {...external}
+                    aria-label={`${supporter.name} (${t.a11y.newTab})`}
+                    style={
+                      {
+                        "--logo-h": `${logoHeight(supporter.logo, 7600, 112)}px`,
+                      } as React.CSSProperties
+                    }
+                  >
+                    <Image
+                      src={supporter.logo.src}
+                      alt={supporter.name}
+                      width={Math.round(240 * supporter.logo.ratio)}
+                      height={240}
+                      sizes="320px"
+                      quality={90}
+                    />
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+
         <section className="ds-band" aria-labelledby="supporters-title">
           <div className="ds-frame lp-wall">
             <div className="lp-wall-head">
               <h2 id="supporters-title">{t.supporters.title}</h2>
               <p>{t.supporters.text}</p>
             </div>
-            <ul className="lp-wall-grid lp-supporters">
+            <ul className="lp-wall-grid lp-supporters lp-community-supporters">
               {supporters.map((supporter) => (
                 <li key={supporter.name}>
                   <a
@@ -896,6 +936,11 @@ export default async function SummitPage({ params }: PageProps<"/[lang]">) {
             <div>
               <h2>{t.footer.sponsors}</h2>
               {sponsors.map((sponsor) => (
+                <a key={sponsor.name} href={sponsor.url} {...external}>
+                  {sponsor.shortName}
+                </a>
+              ))}
+              {sponsoringOrganizations.map((sponsor) => (
                 <a key={sponsor.name} href={sponsor.url} {...external}>
                   {sponsor.shortName}
                 </a>

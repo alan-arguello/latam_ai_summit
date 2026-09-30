@@ -92,8 +92,12 @@ const es = {
     title: "Sponsors",
     text: "Gracias a quienes hacen posible el summit",
   },
+  sponsoringOrganizations: {
+    title: "Sponsored by",
+    text: "Organizaciones que patrocinan el summit",
+  },
   supporters: {
-    title: "Con el apoyo de",
+    title: "Supported by",
     text: "Organizaciones que respaldan el summit",
   },
   venue: {
