@@ -5,13 +5,9 @@
 
 Ambas son Featured/Quality pictures de Wikimedia Commons. Solo se redimensionaron y comprimieron a WebP; las versiones adaptadas conservan la licencia CC BY-SA 3.0. La atribución aparece en el pie de página.
 
-# Speakers
+# Speakers y organizadores
 
-- `speakers/luisa-dalla-costa.webp`: foto de perfil pública en The Org (https://theorg.com/org/latitud/org-chart/luisa-dalla-costa).
-- `speakers/luis-hector-chavez.webp`: foto de speaker de Craft Conference 2022 (https://craft-conf.com/2022/speaker/LuisHectorChavez).
-- `speakers/juan-carlos-niebles.webp`: foto de su sitio personal (https://www.niebles.net/).
-
-Recortadas a 4:5 sin ampliar. Cargos verificados en septiembre de 2026.
+Fotos de perfil públicas de LinkedIn de cada persona, en `people/`. Donde existe una copia idéntica en mayor resolución se usa esa: Luisa Dalla Costa (The Org), Luis Héctor Chávez (Craft Conference 2022), Nicolás López y Alexander Torrenegra; las de Juan Pablo Linares y Ursula Rojas Weiser las envió la organización, y la de Alan Argüello es suya. Recortadas en cuadrado alrededor de la cara, sin ampliar (`scripts/prepare-people.mjs`). Cargos verificados en septiembre de 2026.
 
 # Consulados (logos oficiales)
 
@@ -22,13 +18,15 @@ Recortadas a 4:5 sin ampliar. Cargos verificados en septiembre de 2026.
 
 Recortados y exportados a WebP sobre blanco, sin alterar su diseño.
 
-# Compañías
+# Supporters
 
-- OpenAI, Replit, Palantir, Figma y Perplexity: Simple Icons (https://simpleicons.org), CC0. Las marcas pertenecen a sus dueños.
-- Latitud: wordmark de https://latitud.com. Runway: wordmark de https://runwayml.com.
+- HCCSF: logo enviado por la organización; solo se quitó el blanco alrededor del sello.
+- Ivy, Torrenegra & Co y Torre.ai: logos enviados por la organización (Torrenegra & Co en vector, del kit de marca). Torre.ai solo tenía versión sobre fondo oscuro: se pasó a tinta y al verde oliva que Torre usa sobre fondos claros.
+
+# Otros
+
+- OpenAI (tarjeta "Por anunciar"): Simple Icons (https://simpleicons.org), CC0. La marca pertenece a su dueño.
 - Banderas: https://flagcdn.com (dominio público).
-
-Los logos identifican a la organización de cada speaker o invitado. No implican patrocinio ni participación confirmada.
 
 # Tipografía
 

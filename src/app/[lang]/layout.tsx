@@ -1,10 +1,12 @@
 import type { Viewport } from "next";
+import { notFound } from "next/navigation";
 import { Host_Grotesk, Inter } from "next/font/google";
 import { GeistMono } from "geist/font/mono";
+import { hasLocale, locales } from "@/i18n/config";
 
-import "./globals.css";
-import "./design-system.css";
-import "./summit.css";
+import "../globals.css";
+import "../design-system.css";
+import "../summit.css";
 
 // Display: Host Grotesk, the closest open match to ElevenLabs' Waldenburg.
 const display = Host_Grotesk({
@@ -27,15 +29,23 @@ export const viewport: Viewport = {
   colorScheme: "light",
 };
 
-export default function RootLayout({
+// One static build per language; anything else is a 404.
+export const dynamicParams = false;
+
+export function generateStaticParams() {
+  return locales.map((lang) => ({ lang }));
+}
+
+export default async function RootLayout({
   children,
-}: {
-  children: React.ReactNode;
-}) {
+  params,
+}: LayoutProps<"/[lang]">) {
+  const { lang } = await params;
+  if (!hasLocale(lang)) notFound();
   // Font variables live on <html> so :root tokens can resolve them.
   return (
     <html
-      lang="es"
+      lang={lang}
       className={`${display.variable} ${text.variable} ${GeistMono.variable}`}
     >
       <body>{children}</body>

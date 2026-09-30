@@ -1,10 +1,17 @@
+import { hasLocale, locales } from "@/i18n/config";
 import {
   calendarDescription,
   summit,
   venueAddress,
 } from "@/lib/summit";
 
+// One calendar file per language: /es/latam-ai-summit.ics, /en/…
 export const dynamic = "force-static";
+export const dynamicParams = false;
+
+export function generateStaticParams() {
+  return locales.map((lang) => ({ lang }));
+}
 
 // RFC 5545 text values escape backslashes, commas and semicolons.
 const escape = (value: string) => value.replace(/([\\,;])/g, "\\$1");
@@ -26,11 +33,17 @@ function fold(line: string) {
   return parts.join("\r\n ");
 }
 
-export function GET() {
+export async function GET(
+  _request: Request,
+  { params }: RouteContext<"/[lang]/latam-ai-summit.ics">,
+) {
+  const { lang } = await params;
+  if (!hasLocale(lang)) return new Response("Not found", { status: 404 });
+
   const body = [
     "BEGIN:VCALENDAR",
     "VERSION:2.0",
-    "PRODID:-//LATAM AI Summit//ES",
+    `PRODID:-//LATAM AI Summit//${lang.toUpperCase()}`,
     "CALSCALE:GREGORIAN",
     "METHOD:PUBLISH",
     "BEGIN:VEVENT",
@@ -39,8 +52,8 @@ export function GET() {
     "DTSTART:20261007T170000Z",
     "DTEND:20261007T220000Z",
     `SUMMARY:${escape(`${summit.name} ${summit.hashtag}`)}`,
-    `LOCATION:${escape(`${summit.venue.name}, ${venueAddress}`)}`,
-    `DESCRIPTION:${escape(calendarDescription)}`,
+    `LOCATION:${escape(`${summit.venue.name[lang]}, ${venueAddress}`)}`,
+    `DESCRIPTION:${escape(calendarDescription[lang])}`,
     `URL:${summit.registrationUrl}`,
     "END:VEVENT",
     "END:VCALENDAR",

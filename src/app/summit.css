@@ -63,7 +63,43 @@
 }
 .lp-nav-actions {
   display: flex;
+  align-items: center;
   gap: 8px;
+}
+
+/* Language switch: a two-segment pill, the current language raised. */
+.ds-lang {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  height: 40px;
+  padding: 4px;
+  border-radius: var(--ds-r-pill);
+  background: var(--ds-surface);
+  box-shadow: inset 0 0 0 1px var(--ds-line);
+}
+.ds-lang a {
+  display: grid;
+  place-items: center;
+  min-width: 36px;
+  height: 32px;
+  padding: 0 9px;
+  border-radius: var(--ds-r-pill);
+  font: 500 0.75rem/1 var(--ds-font-text);
+  letter-spacing: 0.06em;
+  color: var(--ds-muted);
+  transition:
+    background-color var(--ds-fast) var(--ds-ease),
+    color var(--ds-fast) var(--ds-ease),
+    box-shadow var(--ds-fast) var(--ds-ease);
+}
+.ds-lang a:hover {
+  color: var(--ds-ink);
+}
+.ds-lang a[aria-current="true"] {
+  background: var(--ds-white);
+  color: var(--ds-ink);
+  box-shadow: var(--ds-raise);
 }
 
 /* ── Hero ────────────────────────────────────────────────────────────────── */
@@ -176,7 +212,7 @@
   letter-spacing: 0.01em;
 }
 
-/* ── Logo walls (consulates, companies) ──────────────────────────────────── */
+/* ── Supporters (logo wall) ──────────────────────────────────────────────── */
 
 .lp-wall-head {
   display: flex;
@@ -201,68 +237,99 @@
 .lp-wall-grid > li {
   position: relative;
   display: grid;
-  place-items: center;
-  min-height: 144px;
-  padding: 36px 28px;
+  min-height: 196px;
   box-shadow:
     1px 0 0 var(--ds-line),
     0 1px 0 var(--ds-line);
 }
-.lp-consulates > li {
+.lp-supporters a {
+  display: grid;
+  place-items: center;
+  padding: 40px 32px;
+  transition: background-color var(--ds-base) var(--ds-ease);
+}
+.lp-supporters a:hover {
+  background: var(--ds-surface);
+}
+.lp-supporters img {
+  /* --logo-h gives every mark about the same area (see page.tsx). */
+  height: var(--logo-h);
+  width: auto;
+  max-width: 100%;
+  object-fit: contain;
+  transition: transform var(--ds-base) var(--ds-ease-out);
+}
+.lp-supporters a:hover img {
+  transform: scale(1.04);
+}
+
+/* ── Consulates ──────────────────────────────────────────────────────────── */
+
+.lp-partners-band {
+  background: var(--ds-surface);
+}
+/* Seven cards, four per row: the last row is centred. */
+.lp-partners {
+  --cols: 4;
+  --gap: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--gap);
+}
+.lp-partner {
+  flex: 0 0 calc((100% - (var(--cols) - 1) * var(--gap)) / var(--cols));
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  aspect-ratio: 5 / 4;
+  padding: 10px;
+  border-radius: var(--ds-r-lg);
   background: var(--ds-white);
-}
-.lp-wall-caption {
-  position: absolute;
-  left: 16px;
-  bottom: 12px;
-  font-size: 0.75rem;
-  letter-spacing: 0.01em;
-  color: var(--ds-subtle);
-  opacity: 0;
-  transform: translateY(3px);
+  box-shadow: var(--ds-ring);
   transition:
-    opacity var(--ds-base) var(--ds-ease),
-    transform var(--ds-base) var(--ds-ease);
+    transform var(--ds-base) var(--ds-ease),
+    box-shadow var(--ds-base) var(--ds-ease);
 }
-.lp-wall-grid > li:hover .lp-wall-caption,
-.lp-companies .lp-wall-caption {
-  opacity: 1;
-  transform: none;
+.lp-partner:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--ds-float);
 }
-.lp-consulates img {
-  /* Normalise very different aspect ratios to a similar optical area. */
-  height: clamp(36px, calc(96px / (0.55 + var(--ratio) * 0.32)), 72px);
+.lp-partner-logo {
+  display: grid;
+  place-items: center;
+  min-height: 0;
+  padding: 18px 16px 12px;
+}
+.lp-partner-logo img {
+  /* Seals and wide wordmarks read at a similar optical size. */
+  height: clamp(44px, calc(124px / (0.5 + var(--ratio) * 0.36)), 112px);
   width: auto;
   max-width: 100%;
   object-fit: contain;
 }
-.lp-wall-grid > .lp-wall-note {
-  place-items: center start;
-  background: transparent;
-}
-.lp-wall-note p {
-  max-width: 220px;
-  font: 300 1.25rem/1.3 var(--ds-font-display);
-  letter-spacing: -0.015em;
-  color: var(--ds-ink);
-}
-.lp-companies .lp-wall-note p {
-  font: 400 0.875rem/1.55 var(--ds-font-text);
+.lp-partner-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 11px 8px 4px;
+  border-top: 1px solid var(--ds-line);
+  font-size: 0.8125rem;
   letter-spacing: 0.01em;
   color: var(--ds-muted);
 }
-.lp-companies a {
-  display: grid;
-  place-items: center;
-  min-height: 44px;
-  font-size: 1.375rem;
-  transition: opacity var(--ds-fast);
+.lp-partner-meta > span:first-child {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+  color: var(--ds-ink);
 }
-.lp-companies > li[data-invited="true"] a {
-  opacity: 0.4;
-}
-.lp-companies > li[data-invited="true"]:hover a {
-  opacity: 0.9;
+.lp-partner-meta img {
+  width: 18px;
+  height: 12px;
+  border-radius: 2px;
+  box-shadow: 0 0 0 0.5px rgb(0 0 0 / 0.14);
 }
 
 /* ── Themes ──────────────────────────────────────────────────────────────── */
@@ -426,10 +493,14 @@
   background: var(--ds-surface-2);
   color: var(--ds-muted);
 }
-.lp-person-empty svg {
+.lp-person .lp-person-empty {
+  background: #111;
+}
+.lp-person .lp-person-empty img {
   width: 16px;
   height: 16px;
-  stroke-width: 1.6;
+  border-radius: 0;
+  filter: brightness(0) invert(1);
 }
 .lp-person > span {
   display: grid;
@@ -443,24 +514,6 @@
 .lp-person small {
   font-size: 0.75rem;
   color: var(--ds-muted);
-}
-.lp-invited {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 10px 18px;
-  margin-top: 16px;
-  font-size: 0.8125rem;
-  color: var(--ds-muted);
-}
-.lp-invited ul {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px 18px;
-}
-.lp-invited .ds-company {
-  font-size: 0.8125rem;
-  opacity: 0.5;
 }
 .lp-flags {
   display: flex;
@@ -488,134 +541,269 @@
 
 /* ── Speakers ────────────────────────────────────────────────────────────── */
 
+/* Three per row, in agenda order: one session per row on desktop. The name
+   is the card's link (stretched over it); the session chip sits above it. */
 .lp-speakers {
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 12px;
 }
 .lp-speaker {
+  position: relative;
   display: flex;
   flex-direction: column;
-  padding: 6px 6px 0;
+  padding: 16px 16px 24px;
   border-radius: var(--ds-r-lg);
   background: var(--ds-surface);
+  transition:
+    background-color var(--ds-base) var(--ds-ease),
+    box-shadow var(--ds-base) var(--ds-ease),
+    transform var(--ds-base) var(--ds-ease);
 }
-.lp-speaker-link {
-  display: grid;
-  gap: 14px;
+.lp-speaker:has(.lp-speaker-name a:hover) {
+  background: var(--ds-white);
+  box-shadow: var(--ds-float);
+  transform: translateY(-3px);
 }
-.lp-speaker-media {
-  position: relative;
-  display: grid;
-  place-items: center;
-  aspect-ratio: 4 / 5;
-  border-radius: var(--ds-r-md);
-  overflow: hidden;
-  isolation: isolate;
-  background: var(--ds-surface-2);
+.lp-speaker:has(.lp-speaker-name a:focus-visible) {
+  outline: 2px solid var(--ds-ink);
+  outline-offset: 3px;
 }
-.lp-speaker-media > img {
-  object-fit: cover;
-  object-position: 50% 22%;
-  transition: transform 700ms var(--ds-ease-out);
-}
-a.lp-speaker-link:hover .lp-speaker-media > img {
-  transform: scale(1.03);
-}
-.lp-speaker-media > .lp-speaker-haze {
-  z-index: -1;
-  filter: blur(14px) saturate(1.15);
-  transform: scale(1.25);
-}
-.lp-speaker-placeholder {
-  display: grid;
-  justify-items: center;
-  gap: 12px;
-  font-size: 0.8125rem;
-  letter-spacing: 0.01em;
-  color: rgb(255 255 255 / 0.92);
-}
-.lp-speaker-placeholder img {
-  filter: brightness(0) invert(1);
-}
-.lp-speaker-status {
-  position: absolute;
-  top: 8px;
-  left: 8px;
-  height: 24px;
-  padding: 0 10px;
-  font-size: 0.75rem;
-}
-.lp-speaker-head {
-  padding-inline: 8px;
-}
-.lp-speaker-head h3 {
+.lp-speaker-top {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  gap: 8px;
-  font: 500 1rem/1.3 var(--ds-font-text);
-  letter-spacing: 0;
+  gap: 12px;
 }
-.lp-speaker-head h3 svg {
-  width: 15px;
-  height: 15px;
-  margin-top: 2px;
+.lp-speaker-photo {
+  position: relative;
+  display: grid;
+  place-items: center;
   flex-shrink: 0;
+  width: 120px;
+  aspect-ratio: 1;
+  overflow: hidden;
+  isolation: isolate;
+  border-radius: var(--ds-r-md);
+  background: var(--ds-surface-2);
+}
+.lp-speaker-photo > img {
+  object-fit: cover;
+  transition: transform 700ms var(--ds-ease-out);
+}
+.lp-speaker:has(.lp-speaker-name a:hover) .lp-speaker-photo > img {
+  transform: scale(1.05);
+}
+.lp-speaker[data-tba="true"] .lp-speaker-photo {
+  background:
+    radial-gradient(circle at 30% 22%, rgb(255 255 255 / 0.16), transparent 58%),
+    #111;
+}
+.lp-speaker-mark {
+  filter: brightness(0) invert(1);
+  opacity: 0.92;
+}
+.lp-speaker-session {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  justify-items: end;
+  gap: 5px;
+  padding: 9px 12px;
+  border-radius: var(--ds-r-sm);
+  background: var(--ds-white);
+  box-shadow: var(--ds-ring);
+  font: 500 0.8125rem/1 var(--ds-font-text);
+  letter-spacing: 0.01em;
+  transition: box-shadow var(--ds-fast) var(--ds-ease);
+}
+.lp-speaker-session time {
+  font: 400 0.75rem/1 var(--ds-font-mono);
+  font-feature-settings: "tnum";
+  color: var(--ds-muted);
+}
+.lp-speaker-session:hover {
+  box-shadow: var(--ds-raise);
+}
+.lp-speaker-name {
+  margin-top: 24px;
+  font: 300 1.5rem/1.15 var(--ds-font-display);
+  letter-spacing: -0.02em;
+}
+.lp-speaker-name a {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: 6px;
+  outline: none;
+}
+.lp-speaker-name a::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+}
+.lp-speaker-name svg {
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  margin-top: 5px;
   color: var(--ds-subtle);
   transition:
     transform var(--ds-base) var(--ds-ease-out),
     color var(--ds-fast);
 }
-a.lp-speaker-link:hover h3 svg {
+.lp-speaker:has(.lp-speaker-name a:hover) .lp-speaker-name svg {
   color: var(--ds-ink);
   transform: translate(2px, -2px);
 }
-.lp-speaker-head p {
-  margin-top: 4px;
-  font-size: 0.8125rem;
-  line-height: 1.45;
+.lp-speaker[data-tba="true"] .lp-speaker-name {
   color: var(--ds-muted);
 }
+.lp-speaker-role {
+  margin-top: 6px;
+  font-size: 0.875rem;
+  line-height: 1.45;
+  letter-spacing: 0.01em;
+  color: var(--ds-muted);
+}
+.lp-speaker-role strong {
+  font-weight: 500;
+  color: var(--ds-ink);
+}
 .lp-speaker-bio {
-  flex: 1;
-  margin-top: 12px;
-  padding-inline: 8px;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px dashed var(--ds-line-dash);
   font-size: 0.8125rem;
   line-height: 1.6;
   letter-spacing: 0.005em;
   color: var(--ds-ink-2);
 }
-.lp-speaker-foot {
+
+/* ── Organizers ──────────────────────────────────────────────────────────── */
+
+.lp-organizers {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+.lp-organizer {
+  position: relative;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  min-height: 50px;
-  margin: 14px 2px 0;
-  padding-inline: 6px;
-  border-top: 1px dashed var(--ds-line-dash);
-  font-size: 0.8125rem;
+  flex-direction: column;
+  align-items: flex-start;
+  height: 100%;
+  padding: 20px 20px 22px;
+  border-radius: var(--ds-r-lg);
+  background: var(--ds-white);
+  box-shadow: var(--ds-ring);
+  transition:
+    transform var(--ds-base) var(--ds-ease),
+    box-shadow var(--ds-base) var(--ds-ease);
+}
+.lp-organizer:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--ds-float);
+}
+.lp-organizer-photo {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 72px;
+  height: 72px;
+  margin-bottom: 32px;
+  overflow: hidden;
+  border-radius: 50%;
+  background: var(--ds-surface-2);
+  box-shadow: 0 0 0 4px var(--ds-surface);
+  font: 400 1.25rem/1 var(--ds-font-display);
+  letter-spacing: -0.02em;
   color: var(--ds-muted);
 }
-.lp-speaker-foot .ds-company {
-  font-size: 0.875rem;
+.lp-organizer-photo img {
+  object-fit: cover;
 }
-.lp-speaker-foot a {
+.lp-organizer-arrow {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 16px;
+  height: 16px;
+  color: var(--ds-subtle);
+  transition:
+    transform var(--ds-base) var(--ds-ease-out),
+    color var(--ds-fast);
+}
+.lp-organizer:hover .lp-organizer-arrow {
+  color: var(--ds-ink);
+  transform: translate(2px, -2px);
+}
+.lp-organizer-name {
+  font: 500 1rem/1.3 var(--ds-font-text);
+  letter-spacing: 0;
+}
+.lp-organizer-role {
+  margin-top: 4px;
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  letter-spacing: 0.01em;
+  color: var(--ds-muted);
+}
+.lp-organizer-org {
   display: inline-flex;
   align-items: center;
+  gap: 8px;
+  margin-top: auto;
+  padding-top: 18px;
+  font-size: 0.8125rem;
+  line-height: 1.3;
+  letter-spacing: 0.01em;
+  color: var(--ds-ink-2);
+}
+.lp-organizer-org img {
+  flex-shrink: 0;
+  width: 18px;
+  height: 12px;
+  border-radius: 2px;
+  box-shadow: 0 0 0 0.5px rgb(0 0 0 / 0.14);
+}
+/* Closing banner across the grid: the consular teams, flag by flag. */
+.lp-organizers-teams {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px 32px;
+  padding: 24px 28px;
+  border-radius: var(--ds-r-lg);
+  background: var(--ds-ink);
+  color: var(--ds-white);
+}
+.lp-organizers-teams ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.lp-organizers-teams img {
+  width: 36px;
+  height: 24px;
+  border-radius: 4px;
+  box-shadow: 0 0 0 0.5px rgb(255 255 255 / 0.24);
+}
+.lp-organizers-teams p {
+  display: grid;
   gap: 6px;
-  min-height: 44px;
-  font: 400 0.75rem/1 var(--ds-font-mono);
-  color: var(--ds-muted);
-  transition: color var(--ds-fast);
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  letter-spacing: 0.01em;
+  color: rgb(255 255 255 / 0.6);
 }
-.lp-speaker-foot a:hover {
-  color: var(--ds-ink);
-}
-.lp-speaker-foot svg {
-  width: 13px;
-  height: 13px;
+.lp-organizers-teams strong {
+  font: 300 1.375rem/1.2 var(--ds-font-display);
+  letter-spacing: -0.015em;
+  color: var(--ds-white);
+  text-wrap: balance;
 }
 
 /* ── Register ────────────────────────────────────────────────────────────── */
@@ -830,15 +1018,78 @@ a.lp-speaker-link:hover h3 svg {
   text-decoration: underline;
   text-underline-offset: 3px;
 }
+.lp-footer-base a[hreflang] {
+  margin-left: 12px;
+  padding-left: 12px;
+  border-left: 1px solid var(--ds-line-2);
+  text-decoration: none;
+  color: var(--ds-ink);
+}
+.lp-footer-base a[hreflang]:hover {
+  color: var(--ds-muted);
+}
+
+/* ── Not found ───────────────────────────────────────────────────────────── */
+
+.lp-missing {
+  display: grid;
+  place-content: center;
+  justify-items: start;
+  gap: 20px;
+  min-height: 100svh;
+  padding: 48px var(--ds-inset);
+}
+.lp-missing .ds-display-m {
+  margin-top: 24px;
+}
+.lp-missing p {
+  margin-bottom: 8px;
+  color: var(--ds-muted);
+}
 .lp-mobile-cta.ds-button {
   display: none;
 }
 
 /* ── Responsive ──────────────────────────────────────────────────────────── */
 
+/* The nav sheds items as it narrows: calendar first (it is also in the
+   agenda), then the consulates link, then the links altogether. */
+@media (max-width: 1200px) {
+  .lp-nav-calendar.ds-button {
+    display: none;
+  }
+}
+@media (max-width: 1100px) {
+  .lp-nav-links {
+    gap: 22px;
+  }
+  .lp-nav-links a[href="#consulados"] {
+    display: none;
+  }
+}
+@media (max-width: 1024px) {
+  .lp-nav-links {
+    display: none;
+  }
+}
+/* Phones keep the logo and the language switch; registering moves to the
+   fixed button at the bottom of the screen (.lp-mobile-cta). */
+@media (max-width: 640px) {
+  .lp-nav-actions > .ds-button {
+    display: none;
+  }
+}
+
 @media (max-width: 1100px) {
   .lp-speakers {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  /* Nine speakers: the fireside chat closes the grid at full width. */
+  .lp-speaker:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+  }
+  .lp-organizers {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
   .lp-themes {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -860,15 +1111,15 @@ a.lp-speaker-link:hover h3 svg {
   }
 }
 @media (max-width: 900px) {
-  .lp-nav-links {
-    display: none;
-  }
   .lp-hero {
     grid-template-columns: 1fr;
     padding-top: 64px;
   }
   .lp-stage {
     aspect-ratio: 4 / 3;
+  }
+  .lp-partners {
+    --cols: 2;
   }
   .lp-wall-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -891,9 +1142,6 @@ a.lp-speaker-link:hover h3 svg {
   }
 }
 @media (max-width: 640px) {
-  .lp-nav-calendar.ds-button {
-    display: none;
-  }
   .lp-hero {
     padding-top: 44px;
     gap: 24px;
@@ -942,27 +1190,34 @@ a.lp-speaker-link:hover h3 svg {
     padding-block: 28px;
   }
   .lp-wall-grid > li {
-    min-height: 112px;
-    padding: 30px 14px 26px;
+    min-height: 132px;
   }
-  .lp-consulates img {
-    height: clamp(24px, calc(62px / (0.55 + var(--ratio) * 0.32)), 50px);
+  .lp-supporters a {
+    padding: 24px 16px;
   }
-  .lp-wall-caption {
-    opacity: 1;
-    transform: none;
-    left: 12px;
-    bottom: 9px;
-    font-size: 0.6875rem;
+  .lp-supporters img {
+    height: calc(var(--logo-h) * 0.72);
   }
-    .lp-wall-note {
-    padding: 22px 14px;
+  .lp-partners {
+    --gap: 8px;
   }
-  .lp-wall-note p {
-    font-size: 1.0625rem;
+  .lp-partner {
+    aspect-ratio: 1;
+    padding: 6px;
+    border-radius: var(--ds-r-md);
   }
-  .lp-companies a {
-    font-size: 1.0625rem;
+  .lp-partner-logo {
+    padding: 12px 8px 8px;
+  }
+  .lp-partner-logo img {
+    height: clamp(30px, calc(80px / (0.5 + var(--ratio) * 0.36)), 76px);
+  }
+  .lp-partner-meta {
+    padding: 8px 6px 3px;
+    font-size: 0.75rem;
+  }
+  .lp-partner-kind {
+    display: none;
   }
   .lp-themes {
     grid-template-columns: 1fr;
@@ -987,30 +1242,109 @@ a.lp-speaker-link:hover h3 svg {
   .lp-person {
     height: 44px;
   }
+  /* Speakers become compact rows: portrait, then name, role and session. */
   .lp-speakers {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: 1fr;
     gap: 8px;
   }
-  .lp-speaker-head,
-  .lp-speaker-bio {
-    padding-inline: 6px;
+  .lp-speaker {
+    display: grid;
+    grid-template-columns: 84px minmax(0, 1fr);
+    grid-template-areas:
+      "photo name"
+      "photo role"
+      "photo session";
+    align-items: start;
+    column-gap: 16px;
+    padding: 12px 14px 12px 12px;
   }
-  .lp-speaker-bio {
-    display: none;
+  .lp-speaker-top {
+    display: contents;
   }
-  .lp-speaker-head h3 {
-    font-size: 0.9375rem;
+  .lp-speaker-photo {
+    grid-area: photo;
+    width: 84px;
+    border-radius: var(--ds-r-sm);
   }
-  .lp-speaker-head p {
+  .lp-speaker-name {
+    grid-area: name;
+    margin-top: 4px;
+    font-size: 1.1875rem;
+  }
+  .lp-speaker-name svg {
+    width: 14px;
+    height: 14px;
+    margin-top: 4px;
+  }
+  .lp-speaker-role {
+    grid-area: role;
+    margin-top: 3px;
+    font-size: 0.8125rem;
+  }
+  .lp-speaker-session {
+    grid-area: session;
+    justify-self: start;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 10px;
+    padding: 6px 10px;
     font-size: 0.75rem;
   }
-  .lp-speaker-foot {
-    margin-top: 12px;
-    min-height: 44px;
-    padding-inline: 4px;
+  .lp-speaker-session time {
+    font-size: 0.6875rem;
   }
-  .lp-speaker-foot .ds-company span {
+  .lp-speaker-bio {
     display: none;
+  }
+  .lp-organizers {
+    gap: 8px;
+  }
+  .lp-organizer,
+  .lp-organizers-teams {
+    padding: 14px 14px 16px;
+    border-radius: var(--ds-r-md);
+  }
+  .lp-organizer-photo {
+    width: 56px;
+    height: 56px;
+    margin-bottom: 20px;
+    font-size: 1rem;
+  }
+  .lp-organizer-arrow {
+    top: 14px;
+    right: 14px;
+    width: 14px;
+    height: 14px;
+  }
+  .lp-organizer-name {
+    font-size: 0.875rem;
+  }
+  .lp-organizer-role,
+  .lp-organizer-org {
+    font-size: 0.75rem;
+  }
+  .lp-organizer-org {
+    align-items: flex-start;
+    padding-top: 12px;
+  }
+  .lp-organizer-org img {
+    margin-top: 2px;
+  }
+  .lp-organizers-teams {
+    flex-direction: column-reverse;
+    align-items: flex-start;
+    gap: 18px;
+  }
+  .lp-organizers-teams img {
+    width: 27px;
+    height: 18px;
+  }
+  .lp-organizers-teams strong {
+    font-size: 1.0625rem;
+  }
+  .lp-organizers-teams p {
+    font-size: 0.75rem;
   }
   .lp-register-facts > div {
     grid-template-columns: 1fr;
