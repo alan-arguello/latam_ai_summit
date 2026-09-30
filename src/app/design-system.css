@@ -341,6 +341,41 @@
   object-fit: contain;
 }
 
+/* ── Decoding text ───────────────────────────────────────────────────────── */
+
+.ds-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.ds-decode-word {
+  white-space: nowrap;
+}
+.ds-decode {
+  position: relative;
+  display: inline-block;
+}
+.ds-decode[data-spinning="true"] {
+  color: transparent;
+}
+.ds-decode-glyph {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-family: var(--ds-font-mono);
+  font-weight: 400;
+  font-size: 0.78em;
+  letter-spacing: 0;
+  color: var(--ds-subtle);
+}
+.ds-decode[data-lead] .ds-decode-glyph {
+  color: var(--ds-live);
+}
+
 /* ── Motion ──────────────────────────────────────────────────────────────── */
 
 @keyframes ds-pulse {

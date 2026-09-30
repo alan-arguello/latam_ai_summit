@@ -42,6 +42,8 @@ import { isPublicSite, siteUrl } from "@/lib/site-url";
 import { Button, LogoMark, Pill, SectionHeading } from "@/components/ui";
 import { Countdown, SlotStatus } from "@/components/event-clock";
 import { LanguageSwitch } from "@/components/language-switch";
+import { AsciiFog } from "@/components/ascii-fog";
+import { DecodeTitle } from "@/components/decode-title";
 
 const HERO_PHOTO = "/images/photos/golden-gate-fog.webp";
 const VENUE_PHOTO = "/images/photos/golden-gate-sunset.webp";
@@ -435,18 +437,21 @@ export default async function SummitPage({ params }: PageProps<"/[lang]">) {
       <main id="contenido">
         <section className="ds-band lp-hero-band" aria-labelledby="summit-title">
           <div className="ds-frame lp-hero">
+            <AsciiFog tone="ink" className="lp-hero-fog" until=".lp-stage" />
             <div className="lp-hero-copy">
-              <Pill tone="white">
-                <span className="lp-live-dot" aria-hidden="true" />
-                {summit.hashtag} · {t.hero.languages}
-              </Pill>
-              <h1 id="summit-title" className="ds-display-xl">
-                LATAM AI Summit
+              <span data-fog-clear>
+                <Pill tone="white">
+                  <span className="lp-live-dot" aria-hidden="true" />
+                  {summit.hashtag} · {t.hero.languages}
+                </Pill>
+              </span>
+              <h1 id="summit-title" className="ds-display-xl" data-fog-clear="0.4">
+                <DecodeTitle text="LATAM AI Summit" />
               </h1>
             </div>
             <div className="lp-hero-aside">
-              <p>{t.hero.lead}</p>
-              <div className="lp-actions">
+              <p data-fog-clear>{t.hero.lead}</p>
+              <div className="lp-actions" data-fog-clear>
                 <Button
                   size="lg"
                   href={summit.registrationUrl}
@@ -475,6 +480,7 @@ export default async function SummitPage({ params }: PageProps<"/[lang]">) {
                 quality={90}
                 sizes="(max-width: 1248px) 100vw, 1200px"
               />
+              <AsciiFog tone="light" className="lp-stage-fog" />
               <div className="lp-stage-top">
                 <Pill tone="white">
                   <time dateTime={summit.startsAt}>{summit.dateLabel[lang]}</time>

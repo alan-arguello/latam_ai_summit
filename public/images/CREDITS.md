@@ -7,7 +7,7 @@ Ambas son Featured/Quality pictures de Wikimedia Commons. Solo se redimensionaro
 
 # Speakers y organizadores
 
-Fotos de perfil públicas de LinkedIn de cada persona, en `people/`. Donde existe una copia idéntica en mayor resolución se usa esa: Luisa Dalla Costa (The Org), Luis Héctor Chávez (Craft Conference 2022), Nicolás López y Alexander Torrenegra; las de Juan Pablo Linares y Ursula Rojas Weiser las envió la organización, y la de Alan Argüello es suya. Recortadas en cuadrado alrededor de la cara, sin ampliar (`scripts/prepare-people.mjs`). Cargos verificados en septiembre de 2026.
+Fotos de perfil públicas de LinkedIn de cada persona, en `people/`. Donde existe una copia idéntica en mayor resolución se usa esa: Luisa Dalla Costa (The Org), Luis Héctor Chávez (Craft Conference 2022), Nicolás López y Alexander Torrenegra; las de Sonia Pereira Portilla, Juan Pablo Linares y Ursula Rojas Weiser las envió la organización, y la de Alan Argüello es suya. Recortadas en cuadrado alrededor de la cara, sin ampliar (`scripts/prepare-people.mjs`). Cargos verificados en septiembre de 2026.
 
 # Consulados (logos oficiales)
 

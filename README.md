@@ -5,6 +5,7 @@ Landing del LATAM AI Summit (#SFTechWeek): miércoles 7 de octubre de 2026, 10:0
 - En español (`/es`) e inglés (`/en`): info del evento, agenda, speakers, organizadores, logos oficiales de los 7 consulados, supporters (HCCSF, Ivy, Torrenegra & Co, Torre.ai) y ubicación.
 - Todos los botones de registro llevan a Partiful: https://partiful.com/e/5bUpcnTFJ3nZUXUIvVbe
 - Cuenta regresiva y agenda que marca la sesión "Ahora" durante el evento.
+- Hero con el título que se decodifica desde ASCII y una niebla de caracteres que se mueve sobre el papel y sobre la foto (`src/components/decode-title.tsx`, `src/components/ascii-fog.tsx`). Se pausa fuera de pantalla y respeta "reducir movimiento".
 - Botones para Google Calendar y archivo `.ics` (Apple / Outlook) por idioma: `/es/latam-ai-summit.ics` y `/en/latam-ai-summit.ics`.
 - Páginas estáticas: sin base de datos ni variables secretas. Solo `/` pasa por el proxy para elegir idioma.
 
