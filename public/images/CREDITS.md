@@ -21,7 +21,7 @@ Recortados y exportados a WebP sobre blanco, sin alterar su diseño.
 # Supporters
 
 - HCCSF: logo enviado por la organización; solo se quitó el blanco alrededor del sello.
-- Ivy, Torrenegra & Co y Torre.ai: logos enviados por la organización (Torrenegra & Co en vector, del kit de marca). Torre.ai solo tenía versión sobre fondo oscuro: se pasó a tinta y al verde oliva que Torre usa sobre fondos claros.
+- Ivy y Torre.ai: logos enviados por la organización. Emma: logo de https://emma.group, renderizado desde su sitio en alta resolución. Torre.ai solo tenía versión sobre fondo oscuro: se pasó a tinta y al verde oliva que Torre usa sobre fondos claros.
 
 # Otros
 

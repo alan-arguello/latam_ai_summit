@@ -199,10 +199,10 @@ export const supporters: Partner[] = [
     logo: { src: "/images/supporters/ivy.webp", ratio: 0.49 },
   },
   {
-    name: "Torrenegra & Co",
-    shortName: "Torrenegra & Co",
-    url: "https://www.torrenegra.consulting",
-    logo: { src: "/images/supporters/torrenegra.svg", ratio: 8.821 },
+    name: "Emma",
+    shortName: "Emma",
+    url: "https://emma.group",
+    logo: { src: "/images/supporters/emma.webp", ratio: 4.73 },
   },
   {
     name: "Torre.ai",

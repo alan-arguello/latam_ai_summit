@@ -22,6 +22,7 @@ const logos = [
   { from: "assets/ascii-lineup/logos/gt.webp", to: "public/images/consulates/gt.webp" },
   { from: "assets/ascii-lineup/logos/hccsf.jpg", to: "public/images/supporters/hccsf.webp", clear: true, outside: true },
   { from: "assets/supporters/ivy.png", to: "public/images/supporters/ivy.webp", clear: true },
+  { from: "assets/supporters/emma.png", to: "public/images/supporters/emma.webp", clear: true },
   { from: "assets/supporters/torre.png", to: "public/images/supporters/torre.webp", clear: true, invert: true },
 ];
 
@@ -142,18 +143,3 @@ for (const { from, to, key, invert, clear, outside } of logos) {
   await writeFile(asset(to), out.data);
   console.log(`${to}  ${out.info.width}×${out.info.height}  ratio ${(out.info.width / out.info.height).toFixed(3)}`);
 }
-
-// Torrenegra & Co: the vector lockup from the brand kit, its viewBox cropped
-// to the drawn art (measured on a render, so descenders are kept).
-const lockup = await readFile(asset("assets/supporters/torrenegra.svg"), "utf8");
-const [x, y, w, h] = lockup.match(/viewBox="([^"]+)"/)[1].split(/\s+/).map(Number);
-const scale = 20;
-const render = await sharp(Buffer.from(lockup.replace("<svg ", `<svg width="${w * scale}" height="${h * scale}" `)))
-  .flatten({ background: "#ffffff" })
-  .png()
-  .toBuffer();
-const { info: box } = await sharp(render).trim({ background: "#ffffff", threshold: 1 }).toBuffer({ resolveWithObject: true });
-const round = (n) => +n.toFixed(2);
-const viewBox = [x - box.trimOffsetLeft / scale, y - box.trimOffsetTop / scale, box.width / scale, box.height / scale].map(round);
-await writeFile(asset("public/images/supporters/torrenegra.svg"), lockup.replace(/viewBox="[^"]+"/, `viewBox="${viewBox.join(" ")}"`));
-console.log(`public/images/supporters/torrenegra.svg  viewBox ${viewBox.join(" ")}  ratio ${(viewBox[2] / viewBox[3]).toFixed(3)}`);

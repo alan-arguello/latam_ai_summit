@@ -2,7 +2,7 @@
 
 Landing del LATAM AI Summit (#SFTechWeek): miércoles 7 de octubre de 2026, 10:00 a.m. – 3:00 p.m. PT, en el War Memorial Veterans Building (401 Van Ness Ave, San Francisco). El número de sala no se publica en el sitio.
 
-- En español (`/es`) e inglés (`/en`): info del evento, agenda, speakers, organizadores, logos oficiales de los 7 consulados, supporters (HCCSF, Ivy, Torrenegra & Co, Torre.ai) y ubicación.
+- En español (`/es`) e inglés (`/en`): info del evento, agenda, speakers, organizadores, logos oficiales de los 7 consulados, supporters (HCCSF, Ivy, Emma, Torre.ai) y ubicación.
 - Todos los botones de registro llevan a Partiful: https://partiful.com/e/5bUpcnTFJ3nZUXUIvVbe
 - Cuenta regresiva y agenda que marca la sesión "Ahora" durante el evento.
 - Hero con el título que se decodifica desde ASCII y una niebla de caracteres que se mueve sobre el papel y sobre la foto (`src/components/decode-title.tsx`, `src/components/ascii-fog.tsx`). Se pausa fuera de pantalla y respeta "reducir movimiento".
@@ -45,7 +45,7 @@ npm run dev -- --port 3107
 - Estructura de la página: `src/app/[lang]/page.tsx`.
 - Imagen para compartir (Open Graph) y favicon: `npm run og` regenera `public/images/opengraph.png`, `opengraph-en.png` y `src/app/icon.png`. Córrelo si cambias fecha, lugar o título.
 - Fotos de speakers y organizadores: las originales (foto de perfil de LinkedIn, o una copia idéntica en mayor resolución) van en `assets/people/`. Para agregar a alguien: pon su foto ahí, corre `swift scripts/detect-faces.swift assets/people/*.jpg assets/people/*.webp > assets/people/faces.json` y luego `node scripts/prepare-people.mjs`, que recorta todas igual alrededor de la cara y las guarda en `public/images/people/`.
-- Logos de consulados: `public/images/consulates/`; supporters (HCCSF, Ivy, Torrenegra & Co, Torre.ai): `public/images/supporters/`, con fondo transparente. Se preparan desde los originales (`assets/ascii-lineup/logos/`, `assets/supporters/`) con `node scripts/prepare-logos.mjs`.
+- Logos de consulados: `public/images/consulates/`; supporters (HCCSF, Ivy, Emma, Torre.ai): `public/images/supporters/`, con fondo transparente. Se preparan desde los originales (`assets/ascii-lineup/logos/`, `assets/supporters/`) con `node scripts/prepare-logos.mjs`.
 
 ## Pendientes de contenido
 
