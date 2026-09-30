@@ -44,8 +44,9 @@ export function proxy(request: NextRequest) {
 
 export const config = {
   matcher: [
-    // Everything except localized pages, Next internals, public files and
-    // the root metadata routes.
-    "/((?!es(?:/|$)|en(?:/|$)|_next/|images/|icon\\.png|robots\\.txt|sitemap\\.xml|favicon\\.ico).*)",
+    // Everything except localized pages, Next and Vercel internals (Web
+    // Analytics loads from /_vercel/insights), public files and the root
+    // metadata routes.
+    "/((?!es(?:/|$)|en(?:/|$)|_next/|_vercel/|images/|icon\\.png|robots\\.txt|sitemap\\.xml|favicon\\.ico).*)",
   ],
 };
