@@ -1478,5 +1478,9 @@
 
 /* A dedicated, centred wall for community support. */
 .lp-wall-grid.lp-community-supporters { grid-template-columns: 1fr; }
-.lp-community-supporters > li { min-height: 180px; }
-.lp-community-supporters img { filter: brightness(0); }
+.lp-community-supporters > li { min-height: 128px; }
+.lp-community-supporters img {
+  width: 112px;
+  height: auto;
+  filter: brightness(0);
+}
