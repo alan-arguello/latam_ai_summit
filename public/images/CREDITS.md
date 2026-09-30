@@ -7,7 +7,7 @@ Ambas son Featured/Quality pictures de Wikimedia Commons. Solo se redimensionaro
 
 # Speakers y organizadores
 
-Fotos de perfil públicas de LinkedIn de cada persona, en `people/`. Donde existe una copia idéntica en mayor resolución se usa esa: Luisa Dalla Costa (The Org), Luis Héctor Chávez (Craft Conference 2022), Nicolás López y Alexander Torrenegra; las de Sonia Pereira Portilla, Juan Pablo Linares y Ursula Rojas Weiser las envió la organización, y la de Alan Argüello es suya. Recortadas en cuadrado alrededor de la cara, sin ampliar (`scripts/prepare-people.mjs`). Cargos verificados en septiembre de 2026.
+Fotos de perfil públicas de LinkedIn de cada persona, en `people/`. Donde existe una copia idéntica en mayor resolución se usa esa: Luisa Dalla Costa (The Org), Luis Héctor Chávez (Craft Conference 2022), Nicolás López y Alexander Torrenegra; las de Sonia Pereira Portilla, María Gracia Lagos, Paolo Privitera, Juan Pablo Linares y Ursula Rojas Weiser las envió la organización, y la de Alan Argüello es suya. Recortadas en cuadrado alrededor de la cara, sin ampliar (`scripts/prepare-people.mjs`). Cargos verificados en septiembre de 2026.
 
 # Consulados (logos oficiales)
 
@@ -22,6 +22,10 @@ Recortados y exportados a WebP sobre blanco, sin alterar su diseño.
 
 - HCCSF: logo enviado por la organización; solo se quitó el blanco alrededor del sello.
 - Ivy y Torre.ai: logos enviados por la organización. Emma: logo de https://emma.group, renderizado desde su sitio en alta resolución. Torre.ai solo tenía versión sobre fondo oscuro: se pasó a tinta y al verde oliva que Torre usa sobre fondos claros.
+
+# Empresas de los speakers
+
+Logos oficiales tomados del sitio de cada empresa (Latitud, Events.com, Horizon, Blinka, PathPilot, Zapia, OpenAI, Replit) o enviados por la organización (Copec WIND Ventures), en `companies/`. Solo se recortaron al dibujo; Events.com y Zapia usan su versión para fondo claro (texto en tinta en vez de blanco). Las marcas pertenecen a sus dueños.
 
 # Otros
 

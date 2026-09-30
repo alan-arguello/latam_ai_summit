@@ -68,13 +68,28 @@ export type Company = {
   scale?: number;
 };
 
+// Each company's own logo, from its website (or sent by the organizers),
+// prepared by scripts/prepare-companies.mjs.
+const company = (name: string, url: string, logo: string, ratio: number, scale?: number): Company => ({
+  name,
+  url,
+  logo: logo.startsWith("/") ? logo : `/images/companies/${logo}`,
+  ratio,
+  scale,
+});
+
 export const companies = {
-  openai: {
-    name: "OpenAI",
-    logo: "/images/logos/openai.svg",
-    url: "https://openai.com",
-    ratio: 1,
-  },
+  latitud: company("Latitud", "https://latitud.com", "latitud.svg", 4.605),
+  wind: company("Copec WIND Ventures", "https://windventures.com", "copec-wind.webp", 5.394, 1.08),
+  events: company("Events.com", "https://events.com", "events.svg", 7.968),
+  horizon: company("Horizon", "https://usehorizon.ai", "horizon.svg", 6.796),
+  blinka: company("Blinka", "https://blinka.co", "blinka.svg", 3.175, 0.92),
+  pathpilot: company("PathPilot", "https://www.getpathpilot.com", "pathpilot.webp", 3.513),
+  zapia: company("Zapia", "https://zapia.com", "zapia.svg", 4.566),
+  openai: company("OpenAI", "https://openai.com", "openai-wordmark.svg", 3.71, 0.92),
+  replit: company("Replit", "https://replit.com", "replit.svg", 3.506),
+  torre: company("Torre.ai", "https://torre.ai", "/images/supporters/torre.webp", 4.592),
+  emma: company("Emma", "https://emma.group", "/images/supporters/emma.webp", 4.73),
 } satisfies Record<string, Company>;
 
 export type Consulate = {
@@ -219,14 +234,14 @@ export type Speaker = {
   id: string;
   name: string;
   role: Localized;
-  org: string;
+  company: Company;
   bio: Localized;
   // Agenda slot the speaker is part of.
   session: string;
   image?: string;
   linkedin?: string;
-  // Logo shown on the portrait while the person is still to be announced.
-  company?: Company;
+  // Symbol shown on the portrait while the person is still to be announced.
+  placeholder?: string;
   status?: "tba";
 };
 
@@ -236,7 +251,7 @@ export const speakers: Speaker[] = [
     id: "luisa-dalla-costa",
     name: "Luisa Dalla Costa",
     role: { es: "Partner", en: "Partner" },
-    org: "Latitud",
+    company: companies.latitud,
     bio: {
       es: "Invierte en founders de Latinoamérica desde Latitud, el fondo pre-seed y fellowship que conecta la región con Silicon Valley. Antes, Positive Ventures e Inventa.",
       en: "Backs Latin American founders at Latitud, the pre-seed fund and fellowship connecting the region with Silicon Valley. Previously at Positive Ventures and Inventa.",
@@ -249,7 +264,7 @@ export const speakers: Speaker[] = [
     id: "maria-gracia-lagos",
     name: "María Gracia Lagos",
     role: { es: "Associate", en: "Associate" },
-    org: "Copec WIND Ventures",
+    company: companies.wind,
     bio: {
       es: "Invierte en startups desde Copec WIND Ventures, el brazo de venture capital de Copec. Ingeniera de la Pontificia Universidad Católica de Chile, hoy en San Francisco.",
       en: "Invests in startups at Copec WIND Ventures, Copec's venture capital arm. An engineer from Pontificia Universidad Católica de Chile, now based in San Francisco.",
@@ -262,7 +277,7 @@ export const speakers: Speaker[] = [
     id: "paolo-privitera",
     name: "Paolo Privitera",
     role: { es: "EVP Corporate Development", en: "EVP, Corporate Development" },
-    org: "Events.com",
+    company: companies.events,
     bio: {
       es: "Lidera el desarrollo corporativo de Events.com. Antes cofundó Evensi. Egresado del MIT Sloan.",
       en: "Leads corporate development at Events.com. Previously cofounded Evensi. MIT Sloan alum.",
@@ -275,7 +290,7 @@ export const speakers: Speaker[] = [
     id: "nicolas-lopez",
     name: "Nicolás López",
     role: { es: "Cofundador y CPO", en: "Cofounder & CPO" },
-    org: "Horizon",
+    company: companies.horizon,
     bio: {
       es: "Cofundador y CPO de Horizon. Uruguayo, formado en la Universidad ORT.",
       en: "Cofounder and CPO of Horizon. Uruguayan, trained at Universidad ORT.",
@@ -288,7 +303,7 @@ export const speakers: Speaker[] = [
     id: "juan-pablo-linares",
     name: "Juan Pablo Linares",
     role: { es: "Cofundador y CEO", en: "Cofounder & CEO" },
-    org: "Blinka",
+    company: companies.blinka,
     bio: {
       es: "Cofundador y CEO de Blinka. Pasó por Stanford GSB y por Antler.",
       en: "Cofounder and CEO of Blinka. Stanford GSB and Antler alum.",
@@ -301,7 +316,7 @@ export const speakers: Speaker[] = [
     id: "victor-laguna",
     name: "Victor Laguna",
     role: { es: "Fundador y CEO", en: "Founder & CEO" },
-    org: "PathPilot",
+    company: companies.pathpilot,
     bio: {
       es: "Fundador y CEO de PathPilot (YC S24), que construye agentes de IA para operaciones de crédito. Antes, en Meta. Estudió en la PUCP.",
       en: "Founder and CEO of PathPilot (YC S24), building AI agents for lending operations. Previously at Meta. Studied at PUCP in Lima.",
@@ -314,7 +329,7 @@ export const speakers: Speaker[] = [
     id: "nicolas-loeff",
     name: "Nicolás Loeff",
     role: { es: "Cofundador y CTO", en: "Cofounder & CTO" },
-    org: "Zapia",
+    company: companies.zapia,
     bio: {
       es: "Cofundador y CTO de Zapia. Doctor por la University of Illinois Urbana-Champaign.",
       en: "Cofounder and CTO of Zapia. PhD from the University of Illinois Urbana-Champaign.",
@@ -327,20 +342,20 @@ export const speakers: Speaker[] = [
     id: "openai",
     name: "OpenAI",
     role: { es: "Engineer", en: "Engineer" },
-    org: "OpenAI",
+    company: companies.openai,
     bio: {
       es: "Una persona del equipo de ingeniería de OpenAI se suma a la conversación sobre cómo se construye producto con IA.",
       en: "An engineer from OpenAI joins the conversation on how product gets built with AI.",
     },
     session: "panel-product",
-    company: companies.openai,
+    placeholder: "/images/logos/openai.svg",
     status: "tba",
   },
   {
     id: "luis-hector-chavez",
     name: "Luis Héctor Chávez",
     role: { es: "CTO", en: "CTO" },
-    org: "Replit",
+    company: companies.replit,
     bio: {
       es: "CTO de Replit desde 2024. Antes, ingeniero en Google (Chrome y Android en ChromeOS) y Microsoft. Estudió en el Tec de Monterrey y en Stanford.",
       en: "CTO of Replit since 2024. Previously an engineer at Google (Chrome and Android on ChromeOS) and Microsoft. Studied at Tec de Monterrey and Stanford.",
@@ -355,9 +370,9 @@ export type Organizer = {
   id: string;
   name: string;
   role: Localized;
-  // Consulate code, or the organisation's name for everyone else.
+  // Consulate code, or the company for everyone else.
   consulate?: string;
-  org?: string;
+  company?: Company;
   image?: string;
   linkedin: string;
 };
@@ -420,7 +435,7 @@ export const organizers: Organizer[] = [
     id: "alexander-torrenegra",
     name: "Alexander Torrenegra",
     role: { es: "Fundador y CEO", en: "Founder & CEO" },
-    org: "Torre.ai",
+    company: companies.torre,
     image: photo("alexander-torrenegra"),
     linkedin: "https://www.linkedin.com/in/alextorrenegra/",
   },
@@ -428,7 +443,7 @@ export const organizers: Organizer[] = [
     id: "alan-arguello",
     name: "Alan Argüello",
     role: { es: "Entrepreneur in Residence", en: "Entrepreneur in Residence" },
-    org: "Emma Group",
+    company: companies.emma,
     image: photo("alan-arguello"),
     linkedin: "https://www.linkedin.com/in/alan-arguello/",
   },

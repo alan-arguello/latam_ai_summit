@@ -629,27 +629,58 @@
   filter: brightness(0) invert(1);
   opacity: 0.92;
 }
+/* Company logos: optical height in --logo-h, linked to the company. */
+.lp-company {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  transition: opacity var(--ds-fast);
+}
+.lp-company img {
+  width: auto;
+  height: var(--logo-h);
+}
+.lp-company:hover {
+  opacity: 0.7;
+}
+.lp-speaker-company {
+  margin-top: 6px;
+}
+/* Footer: the speaker's session, linked to the agenda. */
 .lp-speaker-session {
   position: relative;
   z-index: 1;
-  display: grid;
-  justify-items: end;
-  gap: 5px;
-  padding: 9px 12px;
-  border-radius: var(--ds-r-sm);
-  background: var(--ds-white);
-  box-shadow: var(--ds-ring);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 18px;
+  padding: 14px 2px 0;
+  border-top: 1px dashed var(--ds-line-dash);
   font: 500 0.8125rem/1 var(--ds-font-text);
   letter-spacing: 0.01em;
-  transition: box-shadow var(--ds-fast) var(--ds-ease);
+  transition: color var(--ds-fast);
 }
 .lp-speaker-session time {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   font: 400 0.75rem/1 var(--ds-font-mono);
   font-feature-settings: "tnum";
   color: var(--ds-muted);
+  transition: color var(--ds-fast);
 }
-.lp-speaker-session:hover {
-  box-shadow: var(--ds-raise);
+.lp-speaker-session svg {
+  width: 13px;
+  height: 13px;
+  transition: transform var(--ds-base) var(--ds-ease-out);
+}
+.lp-speaker-session:hover time {
+  color: var(--ds-ink);
+}
+.lp-speaker-session:hover svg {
+  transform: translateX(3px);
 }
 .lp-speaker-name {
   margin-top: 24px;
@@ -692,14 +723,9 @@
   letter-spacing: 0.01em;
   color: var(--ds-muted);
 }
-.lp-speaker-role strong {
-  font-weight: 500;
-  color: var(--ds-ink);
-}
 .lp-speaker-bio {
-  margin-top: 16px;
-  padding-top: 16px;
-  border-top: 1px dashed var(--ds-line-dash);
+  flex: 1;
+  margin-top: 12px;
   font-size: 0.8125rem;
   line-height: 1.6;
   letter-spacing: 0.005em;
@@ -785,6 +811,12 @@
   line-height: 1.3;
   letter-spacing: 0.01em;
   color: var(--ds-ink-2);
+}
+.lp-organizer-org .lp-organizer-logo {
+  width: auto;
+  height: var(--logo-h);
+  border-radius: 0;
+  box-shadow: none;
 }
 .lp-organizer-org img {
   flex-shrink: 0;
@@ -1275,14 +1307,22 @@
   }
   .lp-speaker {
     display: grid;
-    grid-template-columns: 84px minmax(0, 1fr);
+    grid-template-columns: 84px auto minmax(0, 1fr);
     grid-template-areas:
-      "photo name"
-      "photo role"
-      "photo session";
+      "photo name name"
+      "photo role role"
+      "photo company session";
     align-items: start;
     column-gap: 16px;
     padding: 12px 14px 12px 12px;
+  }
+  .lp-speaker-company {
+    grid-area: company;
+    align-self: center;
+    margin-top: 10px;
+  }
+  .lp-speaker-company img {
+    height: calc(var(--logo-h) * 0.72);
   }
   .lp-speaker-top {
     display: contents;
@@ -1309,16 +1349,22 @@
   }
   .lp-speaker-session {
     grid-area: session;
-    justify-self: start;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
+    justify-self: end;
+    align-self: center;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 4px;
     margin-top: 10px;
-    padding: 6px 10px;
+    padding: 0;
+    border-top: 0;
     font-size: 0.75rem;
+    white-space: nowrap;
   }
   .lp-speaker-session time {
     font-size: 0.6875rem;
+  }
+  .lp-speaker-session svg {
+    display: none;
   }
   .lp-speaker-bio {
     display: none;
@@ -1356,6 +1402,9 @@
   }
   .lp-organizer-org img {
     margin-top: 2px;
+  }
+  .lp-organizer-org .lp-organizer-logo {
+    height: calc(var(--logo-h) * 0.8);
   }
   .lp-organizers-teams {
     flex-direction: column-reverse;

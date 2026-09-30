@@ -45,6 +45,7 @@ npm run dev -- --port 3107
 - Estructura de la página: `src/app/[lang]/page.tsx`.
 - Imagen para compartir (Open Graph) y favicon: `npm run og` regenera `public/images/opengraph.png`, `opengraph-en.png` y `src/app/icon.png`. Córrelo si cambias fecha, lugar o título.
 - Fotos de speakers y organizadores: las originales (foto de perfil de LinkedIn, o una copia idéntica en mayor resolución) van en `assets/people/`. Para agregar a alguien: pon su foto ahí, corre `swift scripts/detect-faces.swift assets/people/*.jpg assets/people/*.webp > assets/people/faces.json` y luego `node scripts/prepare-people.mjs`, que recorta todas igual alrededor de la cara y las guarda en `public/images/people/`.
+- Logos de las empresas de speakers y organizadores: originales en `assets/companies/`, preparados con `node scripts/prepare-companies.mjs` en `public/images/companies/`; cada speaker lleva `company` en `src/lib/summit.ts`.
 - Logos de consulados: `public/images/consulates/`; supporters (HCCSF, Ivy, Emma, Torre.ai): `public/images/supporters/`, con fondo transparente. Se preparan desde los originales (`assets/ascii-lineup/logos/`, `assets/supporters/`) con `node scripts/prepare-logos.mjs`.
 
 ## Pendientes de contenido

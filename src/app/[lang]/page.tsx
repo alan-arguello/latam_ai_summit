@@ -34,6 +34,7 @@ import {
   themes,
   venueAddress,
   type AgendaItem,
+  type Company,
   type Organizer,
   type Partner,
   type Speaker,
@@ -126,15 +127,15 @@ function Person({ speaker, lang, t }: Ctx & { speaker: Speaker }) {
           <Image src={speaker.image} alt="" width={36} height={36} />
         ) : (
           <span className="lp-person-empty" aria-hidden="true">
-            {speaker.company && (
-              <Image src={speaker.company.logo} alt="" width={16} height={16} />
+            {speaker.placeholder && (
+              <Image src={speaker.placeholder} alt="" width={16} height={16} />
             )}
           </span>
         )}
         <span>
           <strong>{tba ? t.agenda.tba : speaker.name}</strong>
           <small>
-            {tba ? `${speaker.role[lang]} · ${speaker.org}` : speaker.org}
+            {tba ? `${speaker.role[lang]} · ${speaker.company.name}` : speaker.company.name}
           </small>
         </span>
       </a>
@@ -177,6 +178,41 @@ function AgendaRow({ item, lang, t }: Ctx & { item: AgendaItem }) {
   );
 }
 
+// A company's logo at its optical size (every mark covers about the same
+// area), linked to its website. The height is a CSS variable so small
+// screens can scale it.
+function CompanyMark({
+  company,
+  area,
+  max,
+  className,
+  newTab,
+}: {
+  company: Company;
+  area: number;
+  max: number;
+  className?: string;
+  newTab: string;
+}) {
+  const height = Math.min(max, Math.round(Math.sqrt(area / company.ratio) * (company.scale ?? 1)));
+  return (
+    <a
+      href={company.url}
+      className={["lp-company", className].filter(Boolean).join(" ")}
+      {...external}
+      aria-label={`${company.name} (${newTab})`}
+      style={{ "--logo-h": `${height}px` } as React.CSSProperties}
+    >
+      <Image
+        src={company.logo}
+        alt={company.name}
+        width={Math.round(height * 2 * company.ratio)}
+        height={height * 2}
+      />
+    </a>
+  );
+}
+
 function SpeakerCard({ speaker, lang, t }: Ctx & { speaker: Speaker }) {
   const session = agendaById(speaker.session);
   const tba = speaker.status === "tba";
@@ -194,9 +230,9 @@ function SpeakerCard({ speaker, lang, t }: Ctx & { speaker: Speaker }) {
               quality={90}
             />
           ) : (
-            speaker.company && (
+            speaker.placeholder && (
               <Image
-                src={speaker.company.logo}
+                src={speaker.placeholder}
                 alt=""
                 width={40}
                 height={40}
@@ -205,16 +241,13 @@ function SpeakerCard({ speaker, lang, t }: Ctx & { speaker: Speaker }) {
             )
           )}
         </div>
-        <a
-          href={`#slot-${session.id}`}
-          className="lp-speaker-session"
-          aria-label={`${session.kind[lang]}, ${formatTimeRange(session.start, undefined, lang)}. ${t.speakers.session}`}
-        >
-          <span>{session.kind[lang]}</span>
-          <time dateTime={`${summit.date}T${session.start}`}>
-            {formatTimeRange(session.start, undefined, lang)}
-          </time>
-        </a>
+        <CompanyMark
+          company={speaker.company}
+          area={2700}
+          max={32}
+          className="lp-speaker-company"
+          newTab={t.a11y.newTab}
+        />
       </div>
       <h3 className="lp-speaker-name">
         {speaker.linkedin ? (
@@ -231,9 +264,21 @@ function SpeakerCard({ speaker, lang, t }: Ctx & { speaker: Speaker }) {
         )}
       </h3>
       <p className="lp-speaker-role">
-        {speaker.role[lang]} · <strong>{speaker.org}</strong>
+        {speaker.role[lang]}
+        <span className="ds-sr-only"> · {speaker.company.name}</span>
       </p>
       <p className="lp-speaker-bio">{speaker.bio[lang]}</p>
+      <a
+        href={`#slot-${session.id}`}
+        className="lp-speaker-session"
+        aria-label={`${session.kind[lang]}, ${formatTimeRange(session.start, undefined, lang)}. ${t.speakers.session}`}
+      >
+        <span>{session.kind[lang]}</span>
+        <time dateTime={`${summit.date}T${session.start}`}>
+          {formatTimeRange(session.start, undefined, lang)}
+          <ArrowRight aria-hidden="true" />
+        </time>
+      </a>
     </li>
   );
 }
@@ -271,12 +316,25 @@ function OrganizerCard({ person, lang, t }: Ctx & { person: Organizer }) {
         <ArrowUpRight className="lp-organizer-arrow" aria-hidden="true" />
         <span className="lp-organizer-name">{person.name}</span>
         <span className="lp-organizer-role">{person.role[lang]}</span>
-        <span className="lp-organizer-org">
-          {consulate && (
+        {consulate ? (
+          <span className="lp-organizer-org">
             <Image src={consulate.flag} alt="" width={18} height={12} />
-          )}
-          {consulate ? consulate.shortName[lang] : person.org}
-        </span>
+            {consulate.shortName[lang]}
+          </span>
+        ) : (
+          person.company && (
+            <span className="lp-organizer-org">
+              <Image
+                src={person.company.logo}
+                alt={person.company.name}
+                width={Math.round(40 * person.company.ratio)}
+                height={40}
+                className="lp-organizer-logo"
+                style={{ "--logo-h": `${Math.round(Math.sqrt(1500 / person.company.ratio))}px` } as React.CSSProperties}
+              />
+            </span>
+          )
+        )}
       </a>
     </li>
   );
@@ -378,7 +436,7 @@ function eventSchema({ lang, t }: Ctx) {
         "@type": "Person",
         name: speaker.name,
         jobTitle: speaker.role[lang],
-        worksFor: { "@type": "Organization", name: speaker.org },
+        worksFor: { "@type": "Organization", name: speaker.company.name, url: speaker.company.url },
         sameAs: speaker.linkedin,
       })),
   };
