@@ -11,7 +11,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "og": "node scripts/generate-og.mjs"
+    "og": "node scripts/generate-og.mjs",
+    "credentials": "node scripts/generate-credentials.mjs"
   },
   "dependencies": {
     "geist": "1.7.2",
@@ -26,6 +27,11 @@
     "@types/react-dom": "19.2.3",
     "eslint": "9.39.5",
     "eslint-config-next": "16.3.6",
+    "flag-icons": "7.5.0",
+    "opentype.js": "1.3.4",
+    "pdf-lib": "1.17.1",
+    "puppeteer-core": "24.43.1",
+    "satori": "0.18.4",
     "sharp": "0.35.4",
     "typescript": "5.9.3"
   },
