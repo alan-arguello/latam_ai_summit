@@ -24,18 +24,19 @@ export const summit = {
   },
   venue: {
     name: {
-      es: "Consulado General de Colombia en San Francisco",
-      en: "Consulate General of Colombia in San Francisco",
+      es: "War Memorial Veterans Building",
+      en: "War Memorial Veterans Building",
     },
     shortName: {
-      es: "Consulado de Colombia",
-      en: "Colombian Consulate",
+      es: "Veterans Building",
+      en: "Veterans Building",
     },
-    street: "111 Pine Street, Suite 1400",
-    city: "San Francisco, CA 94111",
-    neighborhood: "Financial District",
+    // The room number is shared with registered guests only, not on the site.
+    street: "401 Van Ness Avenue",
+    city: "San Francisco, CA 94102",
+    neighborhood: "Civic Center",
     mapsUrl:
-      "https://www.google.com/maps/search/?api=1&query=111+Pine+Street+Suite+1400+San+Francisco+CA+94111",
+      "https://www.google.com/maps/search/?api=1&query=War+Memorial+Veterans+Building+401+Van+Ness+Ave+San+Francisco+CA+94102",
   },
 } as const;
 

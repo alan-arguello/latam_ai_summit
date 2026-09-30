@@ -350,7 +350,7 @@ function eventSchema({ lang, t }: Ctx) {
         streetAddress: summit.venue.street,
         addressLocality: "San Francisco",
         addressRegion: "CA",
-        postalCode: "94111",
+        postalCode: "94102",
         addressCountry: "US",
       },
     },

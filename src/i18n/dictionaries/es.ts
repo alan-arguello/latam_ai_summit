@@ -5,7 +5,7 @@ const es = {
   meta: {
     title: "LATAM AI Summit · 7 de octubre, San Francisco | #SFTechWeek",
     description:
-      "Un encuentro en español e inglés durante SF Tech Week que conecta a la comunidad tech de Latinoamérica con Silicon Valley. 7 de octubre de 2026 en el Consulado General de Colombia en San Francisco.",
+      "Un encuentro en español e inglés durante SF Tech Week que conecta a la comunidad tech de Latinoamérica con Silicon Valley. 7 de octubre de 2026 en el War Memorial Veterans Building de San Francisco.",
     ogTitle: "LATAM AI Summit · San Francisco, 7 de octubre",
     ogDescription:
       "Un día. Una comunidad. Dos idiomas. Siete consulados latinoamericanos reúnen a la comunidad tech de la región en San Francisco durante SF Tech Week.",

@@ -6,7 +6,7 @@ const en: Dictionary = {
   meta: {
     title: "LATAM AI Summit · October 7, San Francisco | #SFTechWeek",
     description:
-      "A bilingual gathering during SF Tech Week that connects Latin America's tech community with Silicon Valley. October 7, 2026 at the Consulate General of Colombia in San Francisco.",
+      "A bilingual gathering during SF Tech Week that connects Latin America's tech community with Silicon Valley. October 7, 2026 at the War Memorial Veterans Building in San Francisco.",
     ogTitle: "LATAM AI Summit · San Francisco, October 7",
     ogDescription:
       "One day. One community. Two languages. Seven Latin American consulates bring the region's tech community together in San Francisco during SF Tech Week.",

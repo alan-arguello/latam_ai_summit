@@ -1,6 +1,6 @@
 # LATAM AI Summit · San Francisco
 
-Landing del LATAM AI Summit (#SFTechWeek): miércoles 7 de octubre de 2026, 10:00 a.m. – 3:00 p.m. PT, en el Consulado General de Colombia en San Francisco.
+Landing del LATAM AI Summit (#SFTechWeek): miércoles 7 de octubre de 2026, 10:00 a.m. – 3:00 p.m. PT, en el War Memorial Veterans Building (401 Van Ness Ave, San Francisco). El número de sala no se publica en el sitio.
 
 - En español (`/es`) e inglés (`/en`): info del evento, agenda, speakers, organizadores, logos oficiales de los 7 consulados, supporters (HCCSF, Ivy, Torrenegra & Co, Torre.ai) y ubicación.
 - Todos los botones de registro llevan a Partiful: https://partiful.com/e/5bUpcnTFJ3nZUXUIvVbe
