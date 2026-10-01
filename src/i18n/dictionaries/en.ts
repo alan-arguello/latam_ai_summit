@@ -89,6 +89,9 @@ const en: Dictionary = {
     teamsTitle: "And the teams of all seven consulates",
     teamsText: "Colombia, Peru, Chile, Uruguay, Brazil, Mexico and Guatemala.",
   },
+  eventOperations: {
+    title: "Event Operations",
+  },
   sponsors: {
     title: "Sponsors",
     text: "Thanks to those who make the summit possible",

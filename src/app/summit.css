@@ -1494,3 +1494,20 @@
   .lp-wall-grid.lp-sponsoring-organizations { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .lp-sponsoring-organizations > li:last-child:nth-child(odd) { grid-column: 1 / -1; }
 }
+
+/* Operations uses the same profile cards, with centered rows of three and two. */
+.lp-operations {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+}
+.lp-operations > li {
+  width: calc((100% - 24px) / 3);
+}
+@media (max-width: 1100px) {
+  .lp-operations > li { width: calc((100% - 12px) / 2); }
+}
+@media (max-width: 640px) {
+  .lp-operations > li { width: 100%; }
+}

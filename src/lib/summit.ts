@@ -417,6 +417,44 @@ export type Organizer = {
 };
 
 // Consuls first, then their teams, then the community organizers.
+export const eventOperations: Organizer[] = [
+  {
+    id: "ana-barrera",
+    name: "Ana Barrera",
+    role: { es: "Consultora legal y abogada", en: "Legal Consultant & Attorney" },
+    image: photo("ana-barrera"),
+    linkedin: "https://www.linkedin.com/in/ana-barrera-/",
+  },
+  {
+    id: "angelica-gutierrez",
+    name: "Angélica Gutiérrez",
+    role: { es: "Especialista en comunicaciones", en: "Communications Specialist" },
+    image: photo("angelica-gutierrez"),
+    linkedin: "https://www.linkedin.com/in/angelicagutierreza/",
+  },
+  {
+    id: "jorge-polo",
+    name: "Jorge Polo",
+    role: { es: "Fundador de Saees", en: "Founder Saees" },
+    image: photo("jorge-polo"),
+    linkedin: "https://www.linkedin.com/in/jorgepoloa/",
+  },
+  {
+    id: "natalia-blanco",
+    name: "Natalia Blanco",
+    role: { es: "Equipo fundador de Blinka", en: "Founding Team at Blinka" },
+    image: photo("natalia-blanco"),
+    linkedin: "https://www.linkedin.com/in/natalia-blanco-angulo-6a1240234/",
+  },
+  {
+    id: "samuel-santa",
+    name: "Samuel Santa",
+    role: { es: "Ingeniero de producto", en: "Product Engineer" },
+    image: photo("samuel-santa"),
+    linkedin: "https://www.linkedin.com/in/devsanta/",
+  },
+];
+
 export const organizers: Organizer[] = [
   {
     id: "sonia-pereira",

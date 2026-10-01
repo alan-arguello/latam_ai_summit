@@ -88,6 +88,9 @@ const es = {
     teamsTitle: "Y los equipos de los siete consulados",
     teamsText: "Colombia, Perú, Chile, Uruguay, Brasil, México y Guatemala.",
   },
+  eventOperations: {
+    title: "Operaciones del evento",
+  },
   sponsors: {
     title: "Sponsors",
     text: "Gracias a quienes hacen posible el summit",

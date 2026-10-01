@@ -27,6 +27,7 @@ import {
   formatTimeRange,
   googleCalendarUrl,
   organizers,
+  eventOperations,
   speakerById,
   speakers,
   summit,
@@ -727,6 +728,19 @@ export default async function SummitPage({ params }: PageProps<"/[lang]">) {
                   {t.organizers.teamsText}
                 </p>
               </li>
+            </ul>
+          </div>
+        </section>
+
+        <section className="ds-band lp-partners-band" id="event-operations" aria-labelledby="operations-title">
+          <div className="ds-frame ds-section">
+            <header className="ds-heading">
+              <h2 id="operations-title" className="ds-display-m">{t.eventOperations.title}</h2>
+            </header>
+            <ul className="lp-operations">
+              {eventOperations.map((person) => (
+                <OrganizerCard key={person.id} person={person} {...ctx} />
+              ))}
             </ul>
           </div>
         </section>
