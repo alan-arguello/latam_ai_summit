@@ -735,7 +735,10 @@ export default async function SummitPage({ params }: PageProps<"/[lang]">) {
         <section className="ds-band lp-partners-band" id="event-operations" aria-labelledby="operations-title">
           <div className="ds-frame ds-section">
             <header className="ds-heading">
-              <h2 id="operations-title" className="ds-display-m">{t.eventOperations.title}</h2>
+              <div>
+                <h2 id="operations-title" className="ds-display-m">{t.eventOperations.title}</h2>
+                <p className="lp-operations-subtitle">{t.eventOperations.text}</p>
+              </div>
             </header>
             <ul className="lp-operations">
               {eventOperations.map((person) => (

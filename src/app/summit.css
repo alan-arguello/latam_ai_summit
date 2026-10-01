@@ -1511,3 +1511,9 @@
 @media (max-width: 640px) {
   .lp-operations > li { width: 100%; }
 }
+
+.lp-operations-subtitle {
+  margin-top: 12px;
+  color: var(--ds-muted);
+  line-height: 1.6;
+}

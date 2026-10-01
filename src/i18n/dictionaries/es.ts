@@ -90,6 +90,7 @@ const es = {
   },
   eventOperations: {
     title: "Operaciones del evento",
+    text: "Las personas que ayudan a llevar adelante el evento.",
   },
   sponsors: {
     title: "Sponsors",

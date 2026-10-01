@@ -91,6 +91,7 @@ const en: Dictionary = {
   },
   eventOperations: {
     title: "Event Operations",
+    text: "The people who are helping to run the event.",
   },
   sponsors: {
     title: "Sponsors",
