@@ -99,7 +99,6 @@ const en: Dictionary = {
   },
   supporters: {
     title: "Supported by",
-    text: "Organizations backing the summit",
   },
   venue: {
     eyebrow: "Venue & registration",

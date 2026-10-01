@@ -771,7 +771,7 @@ export default async function SummitPage({ params }: PageProps<"/[lang]">) {
               <h2 id="sponsoring-organizations-title">{t.sponsoringOrganizations.title}</h2>
               <p>{t.sponsoringOrganizations.text}</p>
             </div>
-            <ul className="lp-wall-grid lp-supporters">
+            <ul className="lp-wall-grid lp-supporters lp-sponsoring-organizations">
               {sponsoringOrganizations.map((supporter) => (
                 <li key={supporter.name}>
                   <a
@@ -803,7 +803,6 @@ export default async function SummitPage({ params }: PageProps<"/[lang]">) {
           <div className="ds-frame lp-wall">
             <div className="lp-wall-head">
               <h2 id="supporters-title">{t.supporters.title}</h2>
-              <p>{t.supporters.text}</p>
             </div>
             <ul className="lp-wall-grid lp-supporters lp-community-supporters">
               {supporters.map((supporter) => (
@@ -819,6 +818,7 @@ export default async function SummitPage({ params }: PageProps<"/[lang]">) {
                     }
                   >
                     <Image
+                      className={supporter.name === "Blinka" ? "lp-supporter-blinka" : undefined}
                       src={supporter.logo.src}
                       alt={supporter.name}
                       width={Math.round(240 * supporter.logo.ratio)}

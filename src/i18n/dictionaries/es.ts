@@ -98,7 +98,6 @@ const es = {
   },
   supporters: {
     title: "Supported by",
-    text: "Organizaciones que respaldan el summit",
   },
   venue: {
     eyebrow: "Lugar y registro",

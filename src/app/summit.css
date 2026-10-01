@@ -1477,10 +1477,20 @@
 }
 
 /* A dedicated, centred wall for community support. */
-.lp-wall-grid.lp-community-supporters { grid-template-columns: 1fr; }
+.lp-wall-grid.lp-sponsoring-organizations { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.lp-wall-grid.lp-community-supporters { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .lp-community-supporters > li { min-height: 128px; }
 .lp-community-supporters img {
+  width: auto;
+  height: 48px;
+  max-width: 112px;
+}
+.lp-community-supporters .lp-supporter-blinka {
   width: 112px;
   height: auto;
   filter: brightness(0);
+}
+@media (max-width: 640px) {
+  .lp-wall-grid.lp-sponsoring-organizations { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .lp-sponsoring-organizations > li:last-child:nth-child(odd) { grid-column: 1 / -1; }
 }

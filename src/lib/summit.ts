@@ -219,12 +219,6 @@ export const sponsors: Partner[] = [
 // Sponsoring organizations: logos prepared by scripts/prepare-logos.mjs.
 export const sponsoringOrganizations: Partner[] = [
   {
-    name: "Hispanic Chambers of Commerce of San Francisco",
-    shortName: "HCCSF",
-    url: "https://hccsf.com",
-    logo: { src: "/images/supporters/hccsf.webp", ratio: 0.967, scale: 1.3 },
-  },
-  {
     name: "Ivy",
     shortName: "Ivy",
     url: "https://ivy.com.co",
@@ -245,6 +239,12 @@ export const sponsoringOrganizations: Partner[] = [
 ];
 
 export const supporters: Partner[] = [
+  {
+    name: "Hispanic Chambers of Commerce of San Francisco",
+    shortName: "HCCSF",
+    url: "https://hccsf.com",
+    logo: { src: "/images/supporters/hccsf.webp", ratio: 0.967, scale: 1.3 },
+  },
   {
     name: "Blinka",
     shortName: "Blinka",
