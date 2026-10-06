@@ -304,11 +304,11 @@ export const speakers: Speaker[] = [
   {
     id: "paolo-privitera",
     name: "Paolo Privitera",
-    role: { es: "EVP Corporate Development", en: "EVP, Corporate Development" },
+    role: { es: "Fundador", en: "Founder" },
     company: companies.events,
     bio: {
-      es: "Lidera el desarrollo corporativo de Events.com. Antes cofundó Evensi. Egresado del MIT Sloan.",
-      en: "Leads corporate development at Events.com. Previously cofounded Evensi. MIT Sloan alum.",
+      es: "Fundador de Events.com. Antes cofundó Evensi. Egresado del MIT Sloan.",
+      en: "Founder of Events.com. Previously cofounded Evensi. MIT Sloan alum.",
     },
     session: "panel-investment",
     image: photo("paolo-privitera"),
