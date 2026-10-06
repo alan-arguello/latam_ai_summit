@@ -372,8 +372,8 @@ export const speakers: Speaker[] = [
     role: { es: "Cofundador y CTO", en: "Cofounder & CTO" },
     company: companies.zapia,
     bio: {
-      es: "Cofundador y CTO de Zapia. Doctor por la University of Illinois Urbana-Champaign.",
-      en: "Cofounder and CTO of Zapia. PhD from the University of Illinois Urbana-Champaign.",
+      es: "Lidera el equipo de ingeniería de Zapia, un asistente personal de IA que más de cinco millones de personas en Latinoamérica usan para resolver sus problemas del día a día. Ha liderado equipos que construyen y despliegan modelos de IA a gran escala en Google, Etsy y otras compañías de tecnología, y tiene un doctorado en IA.",
+      en: "Nicolas leads the engineering team at Zapia, a personal AI assistant used by over five million people across Latin America to solve their real-world problems. Nicolas has led teams building and deploying large-scale AI models at Google, Etsy and other tech companies, and has a PhD in AI.",
     },
     session: "panel-product",
     image: photo("nicolas-loeff"),
