@@ -52,29 +52,23 @@ const portrait = async (id) =>
       .png()
       .toBuffer(),
   );
-const openaiPath = (await readFile(asset("public/images/logos/openai.svg"), "utf8")).match(/ d="([^"]+)"/)[1];
-const openai = await ring(
-  await sharp(
-    Buffer.from(
-      `<svg xmlns="http://www.w3.org/2000/svg" width="122" height="122" viewBox="0 0 122 122"><circle cx="61" cy="61" r="61" fill="#111"/><g transform="translate(39 39) scale(1.833)"><path fill="#fff" d="${openaiPath}"/></g></svg>`,
-    ),
-  )
-    .png()
-    .toBuffer(),
-);
 // In agenda order, as on the site.
 const lineup = await Promise.all(
   [
     "luisa-dalla-costa",
     "maria-gracia-lagos",
     "paolo-privitera",
+    "franklin-marcelo",
     "nicolas-lopez",
     "juan-pablo-linares",
     "victor-laguna",
     "nicolas-loeff",
+    "valentina-ponce-de-leon",
+    "luis-hector-chavez",
+    "juan-carlos-niebles",
   ].map(portrait),
 );
-const faces = [...lineup, openai, await portrait("luis-hector-chavez")];
+const faces = lineup;
 
 const flags = await Promise.all(
   ["co", "pe", "cl", "uy", "br", "mx", "gt"].map(async (code) =>
@@ -121,7 +115,7 @@ const copy = {
     date: "Miércoles 7 de octubre · San Francisco",
     detail: "War Memorial Veterans Building · Español e inglés · Entrada gratuita",
     speakersLabel: "Speakers",
-    speakers: "Replit, OpenAI, Latitud, Zapia y más",
+    speakers: "Replit, Samsung, Latitud, Zapia y más",
   },
   en: {
     file: "public/images/opengraph-en.png",
@@ -129,7 +123,7 @@ const copy = {
     date: "Wednesday, October 7 · San Francisco",
     detail: "War Memorial Veterans Building · English & Spanish · Free",
     speakersLabel: "Speakers",
-    speakers: "Replit, OpenAI, Latitud, Zapia and more",
+    speakers: "Replit, Samsung, Latitud, Zapia and more",
   },
 };
 

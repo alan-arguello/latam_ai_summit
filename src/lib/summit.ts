@@ -89,6 +89,8 @@ export const companies = {
   zapia: company("Zapia", "https://zapia.com", "zapia.svg", 4.566),
   openai: company("OpenAI", "https://openai.com", "openai-wordmark.svg", 3.71, 0.92),
   replit: company("Replit", "https://replit.com", "replit.svg", 3.506),
+  lab10: company("LAB10", "https://lab10.ai", "lab10.svg", 2.618, 0.92),
+  samsung: company("Samsung Research", "https://research.samsung.com", "samsung.svg", 6.54, 0.95),
   torre: company("Torre.ai", "https://torre.ai", "/images/supporters/torre.webp", 4.592),
   emma: company("Emma", "https://emma.group", "/images/supporters/emma.webp", 4.73),
 } satisfies Record<string, Company>;
@@ -378,17 +380,17 @@ export const speakers: Speaker[] = [
     linkedin: "https://www.linkedin.com/in/nloeff/",
   },
   {
-    id: "openai",
-    name: "OpenAI",
-    role: { es: "Engineer", en: "Engineer" },
-    company: companies.openai,
+    id: "valentina-ponce-de-leon",
+    name: "Valentina Ponce de León",
+    role: { es: "Cofundadora y CEO", en: "Cofounder & CEO" },
+    company: companies.lab10,
     bio: {
-      es: "Una persona del equipo de ingeniería de OpenAI se suma a la conversación sobre cómo se construye producto con IA.",
-      en: "An engineer from OpenAI joins the conversation on how product gets built with AI.",
+      es: "Cofundadora y CEO de LAB10, la comunidad de AI builders de Latinoamérica donde miles de personas aprenden a construir con IA. Antes, Chief of Staff en Truora. Makers Fellow.",
+      en: "Cofounder and CEO of LAB10, the Latin American community of AI builders where thousands learn to build with AI. Previously Chief of Staff at Truora. Makers Fellow.",
     },
     session: "panel-product",
-    placeholder: "/images/logos/openai.svg",
-    status: "tba",
+    image: photo("valentina-ponce-de-leon"),
+    linkedin: "https://www.linkedin.com/in/vpdl/",
   },
   {
     id: "luis-hector-chavez",
@@ -402,6 +404,19 @@ export const speakers: Speaker[] = [
     session: "fireside",
     image: photo("luis-hector-chavez"),
     linkedin: "https://www.linkedin.com/in/lhchavez/",
+  },
+  {
+    id: "juan-carlos-niebles",
+    name: "Juan Carlos Niebles",
+    role: { es: "EVP, North America AI Center", en: "EVP, North America AI Center" },
+    company: companies.samsung,
+    bio: {
+      es: "Lidera el North America AI Center de Samsung Research como vicepresidente ejecutivo. Antes dirigió la investigación de IA en Salesforce y codirigió el Stanford Vision and Learning Lab.",
+      en: "Leads Samsung Research's North America AI Center as executive vice president. Previously led AI research at Salesforce and co-directed the Stanford Vision and Learning Lab.",
+    },
+    session: "fireside",
+    image: photo("juan-carlos-niebles"),
+    linkedin: "https://www.linkedin.com/in/juan-carlos-niebles/",
   },
 ];
 
@@ -625,7 +640,7 @@ export const agenda: AgendaItem[] = [
       es: "Cómo cambia la forma de diseñar, construir y lanzar producto cuando la IA está en el centro del equipo.",
       en: "How designing, building and shipping product changes when AI sits at the center of the team.",
     },
-    speakers: ["nicolas-loeff", "openai"],
+    speakers: ["nicolas-loeff", "valentina-ponce-de-leon"],
     highlight: true,
   },
   {
@@ -634,14 +649,14 @@ export const agenda: AgendaItem[] = [
     end: "15:00",
     kind: { es: "Fireside chat", en: "Fireside chat" },
     title: {
-      es: "Fireside chat con Luis Héctor Chávez, CTO de Replit",
-      en: "Fireside Chat with Luis Héctor Chávez, CTO of Replit",
+      es: "El futuro de la IA y la ingeniería",
+      en: "The Future of AI and Engineering",
     },
     description: {
-      es: "Una conversación sobre construir en la frontera de la IA con quien lidera la tecnología de Replit.",
-      en: "A conversation about building at the frontier of AI with the engineer leading technology at Replit.",
+      es: "Luis Héctor Chávez, CTO de Replit, y Juan Carlos Niebles, de Samsung Research, conversan sobre hacia dónde van la IA y el oficio de construir software.",
+      en: "Replit CTO Luis Héctor Chávez and Samsung Research's Juan Carlos Niebles on where AI, and the craft of building software, are headed.",
     },
-    speakers: ["luis-hector-chavez"],
+    speakers: ["luis-hector-chavez", "juan-carlos-niebles"],
     highlight: true,
   },
   {
