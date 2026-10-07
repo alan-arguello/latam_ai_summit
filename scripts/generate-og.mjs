@@ -63,7 +63,7 @@ const lineup = await Promise.all(
     "juan-pablo-linares",
     "victor-laguna",
     "nicolas-loeff",
-    "valentina-ponce-de-leon",
+    "roberta-antunes",
     "luis-hector-chavez",
     "juan-carlos-niebles",
   ].map(portrait),
